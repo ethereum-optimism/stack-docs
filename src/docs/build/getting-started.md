@@ -459,7 +459,7 @@ cd ~/optimism/op-node
 	--l1.rpckind=$RPC_KIND
 ```
 
-Run the file: `./run-op-node.sh`
+Run the shell script: `./run-op-node.sh`
 
 Once you run this command, you should start seeing the `op-node` begin to process all of the L1 information after the starting block number that you picked earlier. Once the `op-node` has enough information, it’ll begin sending Engine API payloads to `op-geth`. At that point, you’ll start to see blocks being created inside of `op-geth`. We’re live!
 
@@ -490,7 +490,13 @@ The `op-batcher` takes transactions from the Sequencer and publishes those trans
 
 It is best to give the `Batcher` at least 1 Goerli ETH to ensure that it can continue operating without running out of ETH for gas.
 
+Setup a terminal the same way you did with `op-node` with the direnv and `.envrc`.
 
+Create a new shell script: `run-op-batcher.sh`
+
+Run the command in terminal: `chmod +x run-op-batcher.sh`
+
+Fill the contents of `run-op-batcher.sh` with:
 ```bash
 cd ~/optimism/op-batcher
 
@@ -509,6 +515,7 @@ cd ~/optimism/op-batcher
     --l1-eth-rpc=$L1_RPC \
     --private-key=$BATCHER_KEY
 ```
+Run the shell script: `./run-op-batcher.sh`
 
 ::: tip Controlling batcher costs
 
@@ -522,6 +529,14 @@ When it is high, transactions are written to L1 less frequently, and the batcher
 
 Now start `op-proposer`, which proposes new state roots.
 
+Setup a terminal the same way you did with `op-node` with the direnv and `.envrc`.
+
+Create a new shell script: `run-op-proposer.sh`
+
+Run the command in terminal: `chmod +x run-op-proposer.sh`
+
+Fill the contents of `run-op-proposer.sh` with:
+
 ```bash
 cd ~/optimism/op-proposer
 
@@ -533,6 +548,7 @@ cd ~/optimism/op-proposer
     --private-key=$PROPOSER_KEY \
     --l1-eth-rpc=$L1_RPC
 ```
+Run the shell script: `./run-op-proposer.sh`
 
 
 ## Get some ETH on your Rollup
