@@ -41,11 +41,11 @@ This tutorial was checked on:
 | Software | Version    | Installation command(s) |
 | -------- | ---------- | - |
 | Ubuntu   | 20.04 LTS  | |
-| git, curl, jq, and make | OS default | `sudo apt install -y git curl make jq` |
-| Go       | 1.20       | `sudo apt update` <br> `wget https://go.dev/dl/go1.20.linux-amd64.tar.gz` <br> `tar xvzf go1.20.linux-amd64.tar.gz` <br> `sudo cp go/bin/go /usr/bin/go` <br> `sudo mv go /usr/lib` <br> `echo export GOROOT=/usr/lib/go >> ~/.bashrc`
-| Node     | 16.19.0    | `curl -fsSL https://deb.nodesource.com/setup_16.x \| sudo -E bash -` <br> `sudo apt-get install -y nodejs npm`
+| git, curl, jq, and make | OS default | `sudo apt update` <br> `sudo apt install -y git curl make jq direnv` |
+| Go       | 1.20       | `wget https://go.dev/dl/go1.20.linux-amd64.tar.gz` <br> `tar xvzf go1.20.linux-amd64.tar.gz` <br> `sudo cp go/bin/go /usr/bin/go` <br> `sudo mv go /usr/lib` <br> `echo export GOROOT=/usr/lib/go >> ~/.bashrc`
+| Node     | 16.19.0    | `curl -fsSL https://deb.nodesource.com/setup_16.x \| sudo -E bash -` <br> `sudo apt-get install -y nodejs`
 | pnpm     | 8.5.6      | `sudo npm install -g pnpm`
-| Foundry  | 0.2.0      | `yarn install:foundry`
+| Foundry  | 0.2.0      | `curl -L https://foundry.paradigm.xyz \| bash` <br> `source /root/.bashrc` <br> `foundryup`
 
 ## Build the Source Code
 
@@ -119,6 +119,7 @@ You can generate all of these keys with the `rekey` tool in the `contracts-bedro
 1. Enter the Optimism Monorepo:
 
     ```bash
+    cd ~
     cd optimism
     ```
 
@@ -419,7 +420,7 @@ cd ~/optimism/op-node
 
 ./bin/op-node \
 	--l2=http://localhost:8551 \
-	--l2.jwt-secret=./jwt.txt \    
+	--l2.jwt-secret=./jwt.txt \
 	--sequencer.enabled \
 	--sequencer.l1-confs=3 \
 	--verifier.l1-confs=3 \
