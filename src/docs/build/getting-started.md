@@ -210,7 +210,13 @@ Once you’ve built both repositories, you’ll need head back to the Optimism M
     direnv allow .
     ```
 
-    If you need to install `direnv`, [make sure you also modify the shell configuration](https://direnv.net/docs/hook.html).
+    If you need to install `direnv`, then run this command: 
+    
+    `curl -sfL https://direnv.net/install.sh | bash`
+    
+    [make sure you also modify the shell configuration](https://direnv.net/docs/hook.html).
+    
+    Reload your terminal.
 
 1. Before we can create our configuration file, we’ll need to pick an L1 block to serve as the starting point for our Rollup. It’s best to use a finalized L1 block as our starting block. You can use the `cast` command provided by Foundry to grab all of the necessary information:
 
@@ -322,6 +328,18 @@ There are four components that need to run for a rollup.
 The first two, `op-geth` and `op-node`, have to run on every node.
 The other two, `op-batcher` and `op-proposer`, run only in one place, the sequencer that accepts transactions.
 
+
+Create a `.envrc` file (can place it anywhere).
+
+the file should be setup something like:
+```shell
+export SEQ_KEY=
+export BATCHER_KEY=
+export PROPOSER_KEY=
+export RPC_KIND=
+export L200_ADDR=
+```
+
 Set these environment variables for the configuration
 
 | Variable       | Value |
@@ -414,6 +432,15 @@ This is the reinitialization procedure:
 
 Once we’ve got `op-geth` running we’ll need to run `op-node`. Like Ethereum, the OP Stack has a consensus client (the `op-node`) and an execution client (`op-geth`). The consensus client drives the execution client over the Engine API.
 
+Open a terminal wherever you placed the `.envrc` file that contains `SEQ_KEY`, `BATCHER_KEY`, `PROPOSER_KEY`, `L1_RPC`, `RPC_KIND`, and ` L200_ADDR`
+
+Run the command: `direnv allow .`
+
+Create a new shell script: `run-op-node.sh`
+
+Run the command in terminal: `chmod +x run-op-node.sh`
+
+Fill the contents of `run-op-node.sh` with:
 ```bash
 cd ~/optimism/op-node
 
@@ -431,6 +458,8 @@ cd ~/optimism/op-node
 	--l1=$L1_RPC \
 	--l1.rpckind=$RPC_KIND
 ```
+
+Run the file: `./run-op-node.sh`
 
 Once you run this command, you should start seeing the `op-node` begin to process all of the L1 information after the starting block number that you picked earlier. Once the `op-node` has enough information, it’ll begin sending Engine API payloads to `op-geth`. At that point, you’ll start to see blocks being created inside of `op-geth`. We’re live!
 
