@@ -1,35 +1,58 @@
-const { description } = require('../../package')
-const path = require('path')
+const { description } = require("../../package");
+const path = require("path");
 
 module.exports = {
-  title: 'OP Stack Docs',
+  title: "OP Stack Docs",
   description: description,
   head: [
-    ['link', { rel: 'manifest', href: '/manifest.json' }],
-    ['meta', { name: 'theme-color', content: '#3eaf7c' }],
-    ['meta', { name: 'apple-mobile-web-app-capable', content: 'yes' }],
-    ['meta', { name: 'apple-mobile-web-app-status-bar-style', content: 'black' }],
-    ['meta', { property: 'og:image', content: 'https://stack.optimism.io/assets/logos/twitter-logo.png' }],
-    ['meta', { name: 'twitter:image', content: 'https://stack.optimism.io/assets/logos/twitter-logo.png' }],
-    ['meta', { name: 'twitter:title', content: 'OP Stack Docs' }],
-    ['meta', { property: 'og:title', content: 'OP Stack Docs' }],
-    ['meta', { name: 'twitter:card', content: 'summary' } ],
-    ['link', { rel: "icon", type: "image/png", sizes: "32x32", href: "/assets/logos/favicon.png"}],
+    ["link", { rel: "manifest", href: "/manifest.json" }],
+    ["meta", { name: "theme-color", content: "#3eaf7c" }],
+    ["meta", { name: "apple-mobile-web-app-capable", content: "yes" }],
+    [
+      "meta",
+      { name: "apple-mobile-web-app-status-bar-style", content: "black" },
+    ],
+    [
+      "meta",
+      {
+        property: "og:image",
+        content: "https://stack.optimism.io/assets/logos/twitter-logo.png",
+      },
+    ],
+    [
+      "meta",
+      {
+        name: "twitter:image",
+        content: "https://stack.optimism.io/assets/logos/twitter-logo.png",
+      },
+    ],
+    ["meta", { name: "twitter:title", content: "OP Stack Docs" }],
+    ["meta", { property: "og:title", content: "OP Stack Docs" }],
+    ["meta", { name: "twitter:card", content: "summary" }],
+    [
+      "link",
+      {
+        rel: "icon",
+        type: "image/png",
+        sizes: "32x32",
+        href: "/assets/logos/favicon.png",
+      },
+    ],
   ],
-  theme: path.resolve(__dirname, './theme'),
+  theme: path.resolve(__dirname, "./theme"),
   themeConfig: {
     "twitter:card": "summary",
     contributor: false,
-    hostname: 'https://stack.optimism.io',
-    logo: '/assets/logos/logo.png',
-    docsDir: 'src',
-    docsRepo: 'https://github.com/ethereum-optimism/opstack-docs',
-    docsBranch: 'main',
+    hostname: "https://stack.optimism.io",
+    logo: "/assets/logos/logo.png",
+    docsDir: "src",
+    docsRepo: "https://github.com/ethereum-optimism/stack-docs",
+    docsBranch: "main",
     lastUpdated: false,
-    darkmode: 'disable',
+    darkmode: "disable",
     themeColor: false,
     blog: false,
-    iconPrefix: 'far fa-',
+    iconPrefix: "far fa-",
     pageInfo: false,
     pwa: {
       cacheHTML: false,
@@ -38,171 +61,166 @@ module.exports = {
       offset: -200,
     },
     algolia: {
-      appId: 'O9WKE9RMCV',
-      apiKey: '00cf17cba30b374d08d7f7afead974be',
-      indexName: 'optimism'
+      appId: "O9WKE9RMCV",
+      apiKey: "00cf17cba30b374d08d7f7afead974be",
+      indexName: "optimism",
     },
     nav: [
       {
-        text: 'Home',
-        link: 'https://www.optimism.io/'
+        text: "Home",
+        link: "https://www.optimism.io/",
       },
       {
-        text: 'OP Stack Docs',
-        link: '/'
+        text: "OP Stack Docs",
+        link: "/",
       },
       {
-        text: 'Optimism Docs',
-        link: 'https://community.optimism.io/'
+        text: "Optimism Docs",
+        link: "https://community.optimism.io/",
       },
       {
-        text: 'Governance',
-        link: 'https://community.optimism.io/docs/governance/'
+        text: "Governance",
+        link: "https://community.optimism.io/docs/governance/",
       },
       {
-        text: 'Community',
+        text: "Community",
         items: [
           {
-            icon: 'discord',
-            iconPrefix: 'fab fa-',
-            iconClass: 'color-discord',
-            text: 'Discord',
-            link: 'https://discord.optimism.io',
+            icon: "discord",
+            iconPrefix: "fab fa-",
+            iconClass: "color-discord",
+            text: "Discord",
+            link: "https://discord.optimism.io",
           },
           {
-            icon: 'github',
-            iconPrefix: 'fab fa-',
-            iconClass: 'color-github',
-            text: 'GitHub',
-            link: 'https://github.com/ethereum-optimism/optimism',
+            icon: "github",
+            iconPrefix: "fab fa-",
+            iconClass: "color-github",
+            text: "GitHub",
+            link: "https://github.com/ethereum-optimism/optimism",
           },
           {
-            icon: 'twitter',
-            iconPrefix: 'fab fa-',
-            iconClass: 'color-twitter',
-            text: 'Twitter',
-            link: 'https://twitter.com/optimismFND',
+            icon: "twitter",
+            iconPrefix: "fab fa-",
+            iconClass: "color-twitter",
+            text: "Twitter",
+            link: "https://twitter.com/optimismFND",
           },
           {
-            icon: 'twitch',
-            iconPrefix: 'fab fa-',
-            iconClass: 'color-twitch',
-            text: 'Twitch',
-            link: 'https://www.twitch.tv/optimismpbc'
+            icon: "twitch",
+            iconPrefix: "fab fa-",
+            iconClass: "color-twitch",
+            text: "Twitch",
+            link: "https://www.twitch.tv/optimismpbc",
           },
           {
-            icon: 'medium',
-            iconPrefix: 'fab fa-',
-            iconClass: 'color-medium',
-            text: 'Blog',
-            link: 'https://optimismpbc.medium.com/'
+            icon: "medium",
+            iconPrefix: "fab fa-",
+            iconClass: "color-medium",
+            text: "Blog",
+            link: "https://optimismpbc.medium.com/",
           },
           {
-            icon: 'computer-classic',
-            iconClass: 'color-ecosystem',
-            text: 'Ecosystem',
-            link: 'https://www.optimism.io/apps/all',
+            icon: "computer-classic",
+            iconClass: "color-ecosystem",
+            text: "Ecosystem",
+            link: "https://www.optimism.io/apps/all",
           },
           {
-            icon: 'globe',
-            iconClass: 'color-optimism',
-            text: 'optimism.io',
-            link: 'https://www.optimism.io/',
-          }
-        ]
-      }
+            icon: "globe",
+            iconClass: "color-optimism",
+            text: "optimism.io",
+            link: "https://www.optimism.io/",
+          },
+        ],
+      },
     ],
-    searchPlaceholder: 'Search the docs',
+    searchPlaceholder: "Search the docs",
     sidebar: [
       {
         title: "OP Stack",
         collapsable: false,
         children: [
-          '/',
-          [
-            '/docs/understand/design-principles.md',
-            'Design Principles'
-          ],
-          '/docs/understand/landscape.md',
-          '/docs/understand/explainer.md'
-        ]
+          "/",
+          ["/docs/understand/design-principles.md", "Design Principles"],
+          "/docs/understand/landscape.md",
+          "/docs/understand/explainer.md",
+        ],
       },
       {
         title: "Releases",
         collapsable: false,
         children: [
-          '/docs/releases/',
+          "/docs/releases/",
           {
             title: "Bedrock",
             collapsable: true,
             children: [
-              '/docs/releases/bedrock/',
-              '/docs/releases/bedrock/explainer.md',
-              '/docs/releases/bedrock/differences.md'
-            ]
-          }
-        ]
+              "/docs/releases/bedrock/",
+              "/docs/releases/bedrock/explainer.md",
+              "/docs/releases/bedrock/differences.md",
+            ],
+          },
+        ],
       },
       {
         title: "Building OP Stack Rollups",
         collapsable: false,
         children: [
-          '/docs/build/getting-started.md',
-          '/docs/build/conf.md',
-          '/docs/build/operations.md',
-          '/docs/build/explorer.md',
-          '/docs/build/sdk.md',
+          "/docs/build/getting-started.md",
+          "/docs/build/conf.md",
+          "/docs/build/operations.md",
+          "/docs/build/explorer.md",
+          "/docs/build/sdk.md",
           {
             title: "OP Stack Hacks",
             collapsable: true,
             children: [
-              '/docs/build/hacks.md',
-              '/docs/build/featured.md',
-              '/docs/build/data-avail.md',
-              '/docs/build/derivation.md',
-              '/docs/build/execution.md',
-              '/docs/build/settlement.md',
+              "/docs/build/hacks.md",
+              "/docs/build/featured.md",
+              "/docs/build/data-avail.md",
+              "/docs/build/derivation.md",
+              "/docs/build/execution.md",
+              "/docs/build/settlement.md",
               {
                 title: "Sample Hacks",
                 children: [
                   "/docs/build/tutorials/add-attr.md",
                   "/docs/build/tutorials/new-precomp.md",
-                  "/docs/build/tutorials/predeploys.md"
-                ]
-              }  // End of tutorials
+                  "/docs/build/tutorials/predeploys.md",
+                ],
+              }, // End of tutorials
             ],
-          },    // End of OP Stack hacks
+          }, // End of OP Stack hacks
         ],
-      },      // End of Building OP Stack Rollups
+      }, // End of Building OP Stack Rollups
       {
         title: "Contributing",
         collapsable: false,
-        children: [
-          '/docs/contribute.md',
-        ]
+        children: ["/docs/contribute.md"],
       },
       {
         title: "Security",
         collapsable: false,
         children: [
-          '/docs/security/faq.md',
-          '/docs/security/policy.md',
-          '/docs/security/pause.md',          
-          '/docs/security/forced-withdrawal.md',
-        ]
+          "/docs/security/faq.md",
+          "/docs/security/policy.md",
+          "/docs/security/pause.md",
+          "/docs/security/forced-withdrawal.md",
+        ],
       },
-    ],  // end of sidebar
-  plugins: [
-    "@vuepress/pwa",
-    [
-      '@vuepress/plugin-medium-zoom',
-      {
-        selector: ':not(a) > img'
-      }
+    ], // end of sidebar
+    plugins: [
+      "@vuepress/pwa",
+      [
+        "@vuepress/plugin-medium-zoom",
+        {
+          selector: ":not(a) > img",
+        },
+      ],
+      "plausible-analytics",
     ],
-    "plausible-analytics"
-  ]
-}
-}
+  },
+};
 
 // module.exports.themeConfig.sidebar["/docs/useful-tools/"] = module.exports.themeConfig.sidebar["/docs/developers/"]
