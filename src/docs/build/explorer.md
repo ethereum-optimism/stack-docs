@@ -49,6 +49,8 @@ Download and install [Docker engine](https://docs.docker.com/engine/install/#ser
 
 1. If `op-geth` in archive mode runs on a different computer or a port that isn't 8545, edit `docker-compose-no-build-geth.yml` to set `ETHEREUM_JSONRPC_HTTP_URL` to the correct URL.
 
+1. Edit `docker-compose-no-build-geth.yml` and replace `blockscout/blockscout:${DOCKER_TAG:-latest}` with `blockscout/blockscout-optimism:${DOCKER_TAG:-latest}`.
+
 1. Start Blockscout
 
    ```sh
