@@ -58,6 +58,7 @@ We’re going to be spinning up an EVM Rollup from the OP Stack source code.  Yo
     ```bash
     cd ~
     git clone https://github.com/ethereum-optimism/optimism.git
+    git submodule update --init --recursive
     ```
 
 1. Enter the Optimism Monorepo.
