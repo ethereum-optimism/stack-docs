@@ -56,7 +56,7 @@ The OP Stack is an evolving concept.
 As Optimism grows, so will the OP Stack. 
 Today, the Bedrock Release of the OP Stack simplifies the process of deploying new L2 Rollups. 
 As work on the stack continues, it should become easier to plug in and configure different modules. 
-As the Superchain (link) begins to take shape, the OP Stack can evolve alongside it, to include the message-passing infrastructure that allows different chains to interoperate seamlessly. 
+As the [Superchain](./docs/understand/explainer.md) begins to take shape, the OP Stack can evolve alongside it, to include the message-passing infrastructure that allows different chains to interoperate seamlessly. 
 At the end of the day, the OP Stack becomes what Optimism needs.
 
 ## Dive Deeper into the OP Stack
