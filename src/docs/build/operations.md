@@ -87,4 +87,4 @@ You should *not* add an `op-bathcer`, there should be only one.
    If you already have peer to peer synchronization, add the new node to the `--p2p.static` list so it can synchronize.
 
 1. Start `op-geth` (using the same command line you used on the initial node)
-1. Start `op-node` (using the same command line you used on the initial node)
+1. Start `op-node` (using the same command line you used on the initial node but with sequencer mode disabled)
