@@ -419,7 +419,7 @@ cd ~/optimism/op-node
 
 ./bin/op-node \
 	--l2=http://localhost:8551 \
-	--l2.jwt-secret=./jwt.txt \    
+	--l2.jwt-secret=./jwt.txt \
 	--sequencer.enabled \
 	--sequencer.l1-confs=3 \
 	--verifier.l1-confs=3 \
