@@ -113,7 +113,7 @@ An individual chain within the Optimism Superchain. All chains, regardless of th
 
 ### Properties of the Superchain
 
-In order for Optimism to upgraded to a Superchain, it must have the following properties:
+In order for Optimism to upgrade to a Superchain, it must have the following properties:
 
 | Property | Purpose |
 | - | - |
