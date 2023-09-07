@@ -93,7 +93,7 @@ By using L2 chains to comprise the multi-chain ecosystem, it becomes possible to
 
 ::: details Superchain
 
-A decentralized blockchain platform which consists of many chains that share security and a technology stack (OP Stack). The interoperability and standardization enables individual chains to be treated identically by tools and wallets.
+A decentralized blockchain platform which consists of many chains that share security and a technology stack (OP Stack). The interoperability and standardization enable individual chains to be treated identically by tools and wallets.
 
 :::
 
@@ -127,7 +127,7 @@ Once Optimism has satisfied these properties it may be considered a Superchain.
 
 ## Upgrading Optimism to Become a Superchain
 
-We believe the following changes (after the Bedrock release) are required to create a initial Superchain that makes it possible to deploy and upgrade many chains with the same bridge:
+We believe the following changes (after the Bedrock release) are required to create an initial Superchain that makes it possible to deploy and upgrade many chains with the same bridge:
 
 ### Upgrade the Bedrock bridge to be a chain factory
 
@@ -327,7 +327,7 @@ These are some tools which could make developing on the Superchain a better expe
         
     :::
     
-3. Superchain RPC endpoint — creating a single RPC endpoint where users can send their Superchain transactions regardless of which OP Chain they are intended to enables users to avoid constantly switching their network.
+3. Superchain RPC endpoint — creating a single RPC endpoint where users can send their Superchain transactions regardless of which OP Chain they are intended to enable users to avoid constantly switching their network.
 
 With robust multi-chain dApp frameworks, it may become as easy to deploy cross-chain dApps as it is to deploy dApps which target a single chain.
 
@@ -371,7 +371,7 @@ Stay Optimistic 🔴✨
 
 - **Sequencer**: The specific entity or smart contract which has priority when submitting transactions to an OP Chain.
 
-- **Superchain**: A decentralized blockchain platform which consists of many chains that share security and a technology stack (OP Stack). The interoperability and standardization enables individual chains to be treated identically by tools and wallets.
+- **Superchain**: A decentralized blockchain platform which consists of many chains that share security and a technology stack (OP Stack). The interoperability and standardization enable individual chains to be treated identically by tools and wallets.
 
 - **Superchain Bridge**: The L1 bridge contracts which govern all OP Chains in the Superchain. This bridge can be upgraded by the Optimism Collective.
 
