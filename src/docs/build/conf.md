@@ -7,7 +7,7 @@ The OP Stack is a flexible platform with various configuration values that you c
 
 ::: warning 🚧 Work in Progress
 
-OP Stack configuration is an active work in progress and will likely evolve significantly as time goes on. If something isn’t working about your configuration, check back with this page to see if anything has changed.
+OP Stack configuration is an active work in progress and will likely evolve significantly as time goes on. If something isn’t working with your configuration, check back with this page to see if anything has changed.
 
 :::
 
