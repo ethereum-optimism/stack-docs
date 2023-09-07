@@ -431,7 +431,8 @@ cd ~/optimism/op-node
 	--rpc.enable-admin \
 	--p2p.sequencer.key=$SEQ_KEY \
 	--l1=$L1_RPC \
-	--l1.rpckind=$RPC_KIND
+	--l1.rpckind=$RPC_KIND \
+	--l1.rpc-rate-limit 10
 ```
 
 Once you run this command, you should start seeing the `op-node` begin to process all of the L1 information after the starting block number that you picked earlier. Once the `op-node` has enough information, it’ll begin sending Engine API payloads to `op-geth`. At that point, you’ll start to see blocks being created inside of `op-geth`. We’re live!
