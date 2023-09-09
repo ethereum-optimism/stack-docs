@@ -44,7 +44,7 @@ This tutorial was checked on:
 | git, curl, jq, and make | OS default | `sudo apt update` <br> `sudo apt install -y git curl make jq direnv` |
 | Go       | 1.20       | `wget https://go.dev/dl/go1.20.linux-amd64.tar.gz` <br> `tar xvzf go1.20.linux-amd64.tar.gz` <br> `sudo cp go/bin/go /usr/bin/go` <br> `sudo mv go /usr/lib` <br> `echo export GOROOT=/usr/lib/go >> ~/.bashrc`
 | Node     | 16.19.0    | `curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.5/install.sh \| bash` <br> `export NVM_DIR="$HOME/.nvm"` <br> `[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm` <br> `[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion` <br> `nvm install 16`
-| pnpm     | 8.5.6      | `sudo npm install -g pnpm`
+| pnpm     | 8.5.6      | `npm install -g pnpm`
 | Foundry  | 0.2.0      | `curl -L https://foundry.paradigm.xyz \| bash` <br> `source /root/.bashrc` <br> `foundryup`
 
 ## Build the Source Code
