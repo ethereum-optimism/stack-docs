@@ -226,7 +226,7 @@ Once you’ve built both repositories, you’ll need head back to the Optimism M
     timestamp            1676253324
     ```
 
-1. Fill out the remainder of the pre-populated config file found at [`deploy-config/getting-started.json`](https://github.com/ethereum-optimism/optimism/blob/129032f15b76b0d2a940443a39433de931a97a44/packages/contracts-bedrock/deploy-config/getting-started.json). Use the default values in the config file and make following modifications:
+1. Fill out the remainder of the pre-populated config file found at [`deploy-config/getting-started.json`](https://github.com/ethereum-optimism/optimism/blob/develop/packages/contracts-bedrock/deploy-config/getting-started.json). Use the default values in the config file and make following modifications:
 
     - Replace `"ADMIN"` with the address of the Admin account you generated earlier.
     - Replace `"PROPOSER"` with the address of the Proposer account you generated earlier.
@@ -330,7 +330,7 @@ Set these environment variables for the configuration
 | `BATCHER_KEY`  | Private key of the `Batcher` accounts, which should have at least 1 ETH
 | `PROPOSER_KEY` | Private key of the `Proposer` account
 | `L1_RPC`       | URL for the L1 (such as Goerli) you're using
-| `RPC_KIND`     | The type of L1 server to which you connect, which can optimize requests. Available options are `alchemy`, `quicknode`, `parity`, `nethermind`, `debug_geth`, `erigon`, `basic`, and `any`
+| `RPC_KIND`     | The kind of RPC provider, used to inform optimal transactions receipts fetching, and thus reduce costs. Valid options: `alchemy`, `quicknode`, `infura`, `parity`, `nethermind`, `debug_geth`, `erigon`, `basic`, `any`
 | `L2OO_ADDR`    | The address of the `L2OutputOracleProxy`, available at `~/optimism/packages/contracts-bedrock/deployments/getting-started/L2OutputOracleProxy.json`
 
 ### `op-geth`
