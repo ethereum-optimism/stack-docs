@@ -418,7 +418,7 @@ Once we’ve got `op-geth` running we’ll need to run `op-node`. Like Ethereum,
 cd ~/optimism/op-node
 
 ./bin/op-node \
-	--l2=http://localhost:8551 \
+	--l2=ws://localhost:8551 \
 	--l2.jwt-secret=./jwt.txt \    
 	--sequencer.enabled \
 	--sequencer.l1-confs=3 \
