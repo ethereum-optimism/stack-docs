@@ -114,7 +114,7 @@ For full details, see the [deposit contract](https://github.com/ethereum-optimis
 
 Bedrock also specifies a gas burn mechanism and a fee market for [deposits](#deposits). The gas that [deposited transactions](#arbitrary-message-passing-from-l1) spend on an L2 is bought on L1 via a gas burn. This gas is purchased on a fee market and there is a hard cap on the amount of gas provided to all [deposits](#deposits) in a single L1 block. This mechanism is used to prevent denial of service attacks that could occur by writing transactions to L2 from L1 that are extremely gas-intensive on L2, but cheap on L1.
 
-The gas provided to [deposited transactions](#arbitrary-message-passing-from-l1) is sometimes called "guaranteed gas." Guaranteed gas is unique in that it is paid for by burning gas on L1 and is therefore not refundable.The total amount of L1 gas that must be burned per unit of guaranteed L2 gas requested depends on the price of L2 gas reported by a EIP-1559 style fee mechanism. Furthermore, users receive a dynamic gas stipend based on the amount of L1 gas spent to compute updates to the fee mechanism.
+The gas provided to [deposited transactions](#arbitrary-message-passing-from-l1) is sometimes called "guaranteed gas." Guaranteed gas is unique in that it is paid for by burning gas on L1 and is therefore not refundable. The total amount of L1 gas that must be burned per unit of guaranteed L2 gas requested depends on the price of L2 gas reported by a EIP-1559 style fee mechanism. Furthermore, users receive a dynamic gas stipend based on the amount of L1 gas spent to compute updates to the fee mechanism.
 
 For a deeper explanation, read the [deposits section](https://github.com/ethereum-optimism/optimism/blob/d69cb12f6dcbe3d5355beca8997fbac611b7fe37/specs/deposits.md#deposits) of the protocol specifications.
 
@@ -126,7 +126,7 @@ Withdrawals are initiated on L2 via a call to the **Message Passer** predeploy c
 
 #### Two-step withdrawals
 
-Withdrawal proof validation bugs have been the root cause of many of the biggest bridge hacks of the last few years. The Bedrock release introduces an additional step in the withdrawals’ process of prior versions meant to provide an extra layer of defense against these types of bugs. In the two-step withdrawal process, a Merkle proof corresponding to the withdrawal must be submitted 7 days before the withdrawal can be finalized..  This new safety mechanism gives monitoring tools a full  7 days to find and detect invalid withdrawal proofs . If the [withdrawal](#withdrawals) proof is found to be invalid, a contract fix can be deployed before funds are lost. This dramatically reduces the risk of a bridge compromise.
+Withdrawal proof validation bugs have been the root cause of many of the biggest bridge hacks of the last few years. The Bedrock release introduces an additional step in the withdrawals’ process of prior versions meant to provide an extra layer of defense against these types of bugs. In the two-step withdrawal process, a Merkle proof corresponding to the withdrawal must be submitted 7 days before the withdrawal can be finalized..  This new safety mechanism gives monitoring tools a full  7 days to find and detect invalid withdrawal proofs. If the [withdrawal](#withdrawals) proof is found to be invalid, a contract fix can be deployed before funds are lost. This dramatically reduces the risk of a bridge compromise.
 
 For full details, see the [withdrawals](https://github.com/ethereum-optimism/optimism/blob/d69cb12f6dcbe3d5355beca8997fbac611b7fe37/specs/withdrawals.md) section of the protocol specification.
 
@@ -136,7 +136,7 @@ In Bedrock, a wire format is defined for messaging between the L1 and L2 (i.e., 
 
 #### Optimized data compression
 
-To optimize data compression, lists of L2 transactions called **sequencer batches** are organized into groups of objects called **channels**, each of which have a maximum size that is defined in a [configurable parameter](https://github.com/ethereum-optimism/optimism/blob/d69cb12f6dcbe3d5355beca8997fbac611b7fe37/specs/derivation.md#channel-format) that will initially be set to ~9.5Mb. These [channels](#optimized-data-compression) are expected to be compressed using a compression function and submitted to the L1.
+To optimize data compression, lists of L2 transactions called **sequencer batches** are organized into groups of objects called **channels**, each of which has a maximum size that is defined in a [configurable parameter](https://github.com/ethereum-optimism/optimism/blob/d69cb12f6dcbe3d5355beca8997fbac611b7fe37/specs/derivation.md#channel-format) that will initially be set to ~9.5Mb. These [channels](#optimized-data-compression) are expected to be compressed using a compression function and submitted to the L1.
 
 #### Parallelized batch submission
 

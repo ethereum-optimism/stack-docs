@@ -178,7 +178,7 @@ The `cast wallet new` tool is *not* designed for production deployments. If you 
 
 ## Configure your network
 
-Once you’ve built both repositories, you’ll need head back to the Optimism Monorepo to set up the configuration for your chain. Currently, chain configuration lives inside of the [`contracts-bedrock`](https://github.com/ethereum-optimism/optimism/tree/129032f15b76b0d2a940443a39433de931a97a44/packages/contracts-bedrock) package.
+Once you’ve built both repositories, you’ll need to head back to the Optimism Monorepo to set up the configuration for your chain. Currently, chain configuration lives inside of the [`contracts-bedrock`](https://github.com/ethereum-optimism/optimism/tree/129032f15b76b0d2a940443a39433de931a97a44/packages/contracts-bedrock) package.
 
 1. Enter the Optimism Monorepo:
 
@@ -441,7 +441,7 @@ Once you run this command, you should start seeing the `op-node` begin to proces
 If you use a chain ID that is also used by others, for example the default (42069), your `op-node` will try to use peer to peer to speed up synchronization.
 These attempts will fail, because they will be signed with the wrong key, but they will waste time and network resources.
 
-To avoid this , we start with peer to peer synchronization disabled (`--p2p.disable`).
+To avoid this, we start with peer to peer synchronization disabled (`--p2p.disable`).
 Once you have multiple nodes, it makes sense to use these command line parameters to synchronize between them without getting confused by other blockchains.
 
 ```
@@ -609,7 +609,7 @@ INFO [03-21|14:22:32.754] publishing transaction                   service=batch
 ERROR[03-21|14:22:32.844] unable to publish transaction            service=batcher txHash=2ace6d..7eb248 nonce=2516 gasTipCap=2,340,741 gasFeeCap=172,028,434,515 err="insufficient funds for gas * price + value"
 ```
 
-Just send more ETH and to the batcher, and the problem will be resolved.
+Just send more ETH to the batcher, and the problem will be resolved.
 
 
 
