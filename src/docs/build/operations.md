@@ -83,8 +83,9 @@ You should *not* add an `op-bathcer`, there should be only one.
     ./build/bin/geth init --datadir=./datadir ./genesis.json
     ```
 
-1. To enable L2 nodes to synchronize directly, rather than wait until the transactions are written to L1, turn on [peer to peer synchronization](http://localhost:8081/docs/build/getting-started/#run-op-node).
+
+1. To enable L2 nodes to synchronize directly, rather than wait until the transactions are written to L1, turn on [peer to peer synchronization](./getting-started/#op-node).
    If you already have peer to peer synchronization, add the new node to the `--p2p.static` list so it can synchronize.
 
 1. Start `op-geth` (using the same command line you used on the initial node)
-1. Start `op-node` (using the same command line you used on the initial node)
+1. Start `op-node` (using the same command line you used on the initial node but with sequencer mode disabled by removing `--sequencer.enabled` and `--sequencer.l1-confs` flags)

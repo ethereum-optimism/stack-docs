@@ -112,7 +112,7 @@ The easiest way to withdraw ETH is to send it to the bridge, or the cross domain
       L1CrossDomainMessenger: '0x27E8cBC25C0Aa2C831a356bbCcc91f4e7c48EeeE',
       L1StandardBridge: '0x154EaA56f8cB658bcD5d4b9701e1483A414A14Df',
       OptimismPortal: '0x4AD19e14C1FD57986dae669BE4ee9C904431572C',
-      L2OutputOracle: '0x65B41B7A2550140f57b603472686D743B4b940dB'
+      L2OutputOracle: '0xE6Dfba0953616Bacab0c9A8ecb3a9BBa77FC15c0'
    }
    ```
 
