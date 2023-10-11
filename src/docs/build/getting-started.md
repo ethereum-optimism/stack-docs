@@ -427,7 +427,6 @@ cd ~/optimism/op-node
 	--rpc.addr=0.0.0.0 \
 	--rpc.port=8547 \
 	--p2p.disable \
-	--rpc.enable-admin \
 	--p2p.sequencer.key=$SEQ_KEY \
 	--l1=$L1_RPC \
 	--l1.rpckind=$RPC_KIND
@@ -476,7 +475,6 @@ cd ~/optimism/op-batcher
     --resubmission-timeout=30s \
     --rpc.addr=0.0.0.0 \
     --rpc.port=8548 \
-    --rpc.enable-admin \
     --max-channel-duration=1 \
     --l1-eth-rpc=$L1_RPC \
     --private-key=$BATCHER_KEY
