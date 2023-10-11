@@ -421,8 +421,8 @@ cd ~/optimism/op-node
 	--l2=ws://localhost:8551 \
 	--l2.jwt-secret=./jwt.txt \
 	--sequencer.enabled \
-	--sequencer.l1-confs=3 \
-	--verifier.l1-confs=3 \
+	--sequencer.l1-confs=5 \
+	--verifier.l1-confs=4 \
 	--rollup.config=./rollup.json \
 	--rpc.addr=0.0.0.0 \
 	--rpc.port=8547 \
