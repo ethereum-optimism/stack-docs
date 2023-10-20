@@ -578,6 +578,17 @@ To use any other development stack, see the getting started tutorial, just repla
 
 ### Errors
 
+#### Error Deploying L1 Contracts
+
+The condition arises when deploying to shared networks like mainnet or testnet because the addresses are deterministic. 
+The deployment fails and causes a `CREATE2` collision when the address is already occupied by a different deployment, showing the following error:
+
+`EvmError: Revert`
+
+The L1 contract implementations are deployed using `CREATE2`. The salt value determines the address that the contract is deployed to, and a default salt value is provided which can be overridden with the `IMPL_SALT` environment variable. 
+The **solution** is to use a different salt for each deployment of the implementations because the deployment fails if the contract already exists at that address. 
+See the [`.envrc.example`](https://github.com/ethereum-optimism/optimism/blob/7591f192ddf23b55809d7a1830775f627a1d5307/packages/contracts-bedrock/.envrc.example) file in `contracts-bedrock` for an example of how to do this. 
+
 #### Corrupt data directory
 
 If `op-geth` aborts (for example, because the computer it is running on crashes), you might get these errors on `op-node`:
