@@ -382,16 +382,24 @@ There are four components that need to run for a rollup.
 The first two, `op-geth` and `op-node`, have to run on every node.
 The other two, `op-batcher` and `op-proposer`, run only in one place, the sequencer that accepts transactions.
 
-Set these environment variables for the configuration
+### Set environment variables
+
+You will need to set several environment variables in your shell manually for this next section. Environment variables can be set by using the `export` command. For example, to set the `SEQ_KEY`, execute the following:
+
+```sh
+export SEQ_KEY=paste_your_sequencer_private_key_here
+```
+
+Repeat this `export` process for all of the variables listed below:
 
 | Variable       | Value |
-| -------------- | -
-| `SEQ_KEY`      | Private key of the `Sequencer` account
-| `BATCHER_KEY`  | Private key of the `Batcher` accounts, which should have at least 1 ETH
-| `PROPOSER_KEY` | Private key of the `Proposer` account
-| `L1_RPC`       | URL for the L1 (such as Goerli) you're using
-| `RPC_KIND`     | The kind of RPC provider, used to inform optimal transactions receipts fetching, and thus reduce costs. Valid options: `alchemy`, `quicknode`, `infura`, `parity`, `nethermind`, `debug_geth`, `erigon`, `basic`, `any`
-| `L2OO_ADDR`    | The address of the `L2OutputOracleProxy`, available at `~/optimism/packages/contracts-bedrock/deployments/getting-started/L2OutputOracleProxy.json`
+| -------------- | ----- |
+| `SEQ_KEY`      | Private key of the `Sequencer` account you generated earlier. |
+| `BATCHER_KEY`  | Private key of the `Batcher` accounts you generated earlier. |
+| `PROPOSER_KEY` | Private key of the `Proposer` account you generated earlier. |
+| `L1_RPC`       | URL for the L1 (e.g., Goerli) RPC provider you're using. |
+| `RPC_KIND`     | The kind of RPC provider, used to inform optimal transactions receipts fetching, and thus reduce costs. Valid options: `alchemy`, `quicknode`, `infura`, `parity`, `nethermind`, `debug_geth`, `erigon`, `basic`, `any`. |
+| `L2OO_ADDR`    | The address of the `L2OutputOracleProxy`, available at `~/optimism/packages/contracts-bedrock/deployments/getting-started/L2OutputOracleProxy.json`. |
 
 ### `op-geth`
 
