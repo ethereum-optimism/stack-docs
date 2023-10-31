@@ -1,5 +1,5 @@
 ---
-title: Upgrade Guide - Multi-Chain Node & Canyon Upgrade Guide
+title: Upgrade Guide - Multi-Chain Node & Canyon Hard Fork Upgrades
 lang: en-US
 ---
 
@@ -54,15 +54,15 @@ Feel free to upgrade testnets and replicas first to test out this change.
 This example uses OP-Sepolia but can **also be configured with ENV vars on both op-node and op-geth!**
 
 `op-node`
---network=op-sepolia
---beta.extra-networks   # if not running op-sepolia/mainnet/goerli
---rollup.halt=minor     # if opting in to halting on incompatible breaking changes
---rollup.load-protocol-versions=true
+- --network=op-sepolia
+- --beta.extra-networks   # if not running op-sepolia/mainnet/goerli
+- --rollup.halt=minor     # if opting in to halting on incompatible breaking changes
+- --rollup.load-protocol-versions=true
 
 `op-geth`
---rollup.halt=minor
---op-network=op-sepolia
---rollup.superchain-upgrades=true
+- --rollup.halt=minor
+- --op-network=op-sepolia
+- --rollup.superchain-upgrades=true
 
 ## Canyon Hard Fork Upgrade
 
