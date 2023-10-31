@@ -152,6 +152,7 @@ module.exports = {
           '/docs/build/operations.md',
           '/docs/build/explorer.md',
           '/docs/build/sdk.md',
+          '/docs/build/multichain-canyon-upgrade.md',
           {
             title: "OP Stack Hacks",
             collapsable: true,

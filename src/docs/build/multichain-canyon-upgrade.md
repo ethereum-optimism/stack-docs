@@ -1,5 +1,5 @@
 ---
-title: Upgrade Guide: Multi-Chain Node & Canyon Upgrade Guide
+title: Upgrade Guide - Multi-Chain Node & Canyon Upgrade Guide
 lang: en-US
 ---
 
