@@ -3,490 +3,518 @@ title: Getting Started
 lang: en-US
 ---
 
-## Overview
+::: tip
+This quickstart guide is designed to get you familiar with all of the components that make up the OP Stack.
+Please **be prepared to set aside approximately one hour** to get everything running properly and **make sure to read through the guide carefully**.
+You don't want to miss any important steps that might cause issues down the line.
+:::
 
-Hello! This Getting Started guide is meant to help you kick off your OP Stack journey by taking you through the process of spinning up your very own OP Stack chain on the Ethereum Goerli testnet. You can use this chain to perform tests and prepare for the superchain, or you can modify it to adapt it to your own needs (which may make it incompatible with the superchain in the future).
+This Getting Started quickstart guide is **designed for developers** who want to learn about the OP Stack by spinning up an OP Stack testnet chain.
+In this tutorial we'll walk through the full deployment process and **you'll end up with your very own OP Stack testnet**.
 
-## Know before you go
+You can use this testnet to experiment and perform tests or you can choose to modify the chain to adapt it to your own needs.
+**The OP Stack is free (as in freedom) and open source software licensed entirely under the MIT license**.
+You don't need permission from anyone to modify or deploy the stack in any configuration you want.
 
-Before we kick off, note that this is a relatively long tutorial! You should prepare to set aside an hour or two to get everything running. Here’s an itemized list of what we’re about to do:
+::: tip
+Modifications to the OP Stack may prevent a chain from being able to benefit from aspects of the [Optimism Superchain](/op-stack/explainer).
+Make sure to check out the [Superchain Explainer](/op-stack/explainer) to learn more.
+:::
 
-1. Install dependencies
-2. Build the source code
-3. Generate and fund accounts and private keys
-4. Configure your network
-5. Deploy the L1 contracts
-6. Initialize op-geth
-7. Run op-geth
-8. Run op-node
-9. Get some Goerli ETH on your L2
-10. Send some test transactions
-11. Celebrate!
+## What We're Going to Deploy
 
-## Prerequisites
+When deploying an OP Stack chain, you'll be setting up four different components.
+It's useful to understand what each of these components does before you start deploying your chain.
 
-You’ll need the following software installed to follow this tutorial:
+### Smart Contracts
 
-- [Git](https://git-scm.com/)
-- [Go](https://go.dev/)
-- [Node](https://nodejs.org/en/)
-- [Pnpm](https://classic.yarnpkg.com/lang/en/docs/install/)
-- [Foundry](https://github.com/foundry-rs/foundry#installation)
-- [Make](https://linux.die.net/man/1/make)
-- [jq](https://github.com/jqlang/jq)
-- [direnv](https://direnv.net/docs/installation.html)
+The OP Stack gives you the ability to deploy your own Rollup chains that use a Layer 1 blockchain to host and order transaction data.
+OP Stack chains use several smart contracts on the L1 blockchain to manage aspects of the Rollup.
+Each OP Stack chain has its own set of L1 smart contracts that are deployed when the chain is created.
+We'll be using the L1 smart contracts found in the [`contracts-bedrock` package](https://github.com/ethereum-optimism/optimism/tree/develop/packages/contracts-bedrock) within the [Optimism Monorepo](https://github.com/ethereum-optimism/optimism).
 
-This tutorial was checked on:
+### Sequencer Node
 
-| Software | Version    | Installation command(s) |
-| -------- | ---------- | - |
-| Ubuntu   | 20.04 LTS  | |
-| git, curl, jq, and make | OS default | `sudo apt install -y git curl make jq` |
-| Go       | 1.20       | `sudo apt update` <br> `wget https://go.dev/dl/go1.20.linux-amd64.tar.gz` <br> `tar xvzf go1.20.linux-amd64.tar.gz` <br> `sudo cp go/bin/go /usr/bin/go` <br> `sudo mv go /usr/lib` <br> `echo export GOROOT=/usr/lib/go >> ~/.bashrc`
-| Node     | 16.19.0    | `curl -fsSL https://deb.nodesource.com/setup_16.x | sudo -E bash -` <br> `sudo apt-get install -y nodejs npm`
-| pnpm     | 8.5.6      | `sudo npm install -g pnpm`
-| Foundry  | 0.2.0      | `yarn install:foundry`
+OP Stack chains use Sequencer nodes to gather transactions from users and publish them to the L1 blockchain.
+Vanilla (unmodified) OP Stack chains rely on at least one of these Sequencer nodes, so we'll have to run one.
+You can also run additional non-Sequencer nodes if you'd like (not included in this tutorial).
 
-### Configuring direnv
+#### Consensus Client
 
-Parts of this tutorial use [`direnv`](https://direnv.net) as a way of loading environment variables from `.envrc` files into your shell. This means you won't have to manually export environment variables every time you want to use them. `direnv` only ever has access to files that you explicitly allow it to see.
+OP Stack nodes, like Ethereum nodes, have a consensus client.
+The consensus client is responsible for determining the list and ordering of blocks and transactions that are part of your blockchain.
+Several implementations of the OP Stack consensus client exist, including `op-node` (maintained by OP Labs) and [`magi`](https://github.com/a16z/magi) (maintained by a16z).
+In this tutorial we'll be using the [`op-node` implementation](https://github.com/ethereum-optimism/optimism/tree/develop/op-node) found within the [Optimism Monorepo](https://github.com/ethereum-optimism/optimism).
 
-After [installing `direnv`](https://direnv.net/docs/installation.html), you will need to make sure that [`direnv` is hooked into your shell](https://direnv.net/docs/hook.html). Instructions for various common shells can be found below.
+#### Execution Client
 
-#### Hooking direnv into BASH
+OP Stack nodes, like Ethereum nodes, also have an execution client.
+The execution client is responsible to executing transactions and storing/updating the state of the blockchain.
+Various implementations of the OP Stack execution client exist, including `op-geth` (maintained by OP Labs), [`op-erigon`](https://github.com/testinprod-io/op-erigon) (maintained by Test in Prod), and `op-nethermind` (coming soon).
+In this tutorial we'll be using the [`op-geth` implementation](https://github.com/ethereum-optimism/op-geth) found within the [`op-geth` repository](https://github.com/ethereum-optimism/op-geth).
 
-BASH is a shell commonly found on linux machines.
+### Batcher
 
-To hook `direnv` into BASH, open the file `~/.bashrc` and add the following line to the bottom of the file:
+The Batcher is an entity for publishing transactions from the Sequencer to the L1 blockchain.
+The Batcher runs continuously alongside the Sequencer and publishes transactions in batches (hence the name) on a regular basis.
+We'll be using the [`op-batcher` implementation](https://github.com/ethereum-optimism/optimism/tree/develop/op-batcher) of the Batcher component found within the [Optimism Monorepo](https://github.com/ethereum-optimism/optimism).
 
-```sh
-eval "$(direnv hook bash)"
-```
+### Proposer
 
-Now either close and reopen your terminal or alternatively load the updated bash configuration file:
+The Proposer is an entity responsible for publishing transactions *results* (in the form of L2 state roots) to the L1 blockchain.
+This allows smart contracts on L1 to read the state of the L2, which is necessary for cross-chain communication and user withdrawals.
+It's likely that the Proposer will be removed in the future, but for now it's a necessary component of the OP Stack.
+We'll be using the [`op-proposer` implementation](https://github.com/ethereum-optimism/optimism/tree/develop/op-proposer) of the Proposer component found within the [Optimism Monorepo](https://github.com/ethereum-optimism/optimism).
 
-```sh
-source ~/.bashrc
-```
+## Software Dependencies
 
-#### Hooking direnv into ZSH
+| Dependency | Version | Version Check Command |
+| --- | --- | --- |
+| [git](https://git-scm.com/) | `^2` | `git --version` |
+| [go](https://go.dev/) | `^1.21` | `go version` |
+| [node](https://nodejs.org/en/) | `^20` | `node --version` |
+| [pnpm](https://pnpm.io/installation) | `^8` | `pnpm --version` |
+| [foundry](https://github.com/foundry-rs/foundry#installation) | `^0.2.0` | `forge --version` |
+| [make](https://linux.die.net/man/1/make) | `^4` | `make --version` |
+| [jq](https://github.com/jqlang/jq) | `^1.6` | `jq --version` |
+| [direnv](https://direnv.net) | `^2` | `direnv --version` |
 
-ZSH is a shell commonly found on MacOS machines.
+### Notes on Specific Dependencies
 
-To hook `direnv` into ZSH, open the file `~/.zshrc` and add the following line to the bottom of the file:
+#### `node`
 
-```sh
-eval "$(direnv hook zsh)"
-```
+We recommend using the latest LTS version of Node.js (currently v20).
+[`nvm`](https://github.com/nvm-sh/nvm) is a useful tool that can help you manage multiple versions of Node.js on your machine.
+You may experience unexpected errors on older versions of Node.js.
 
-Now either close and reopen your terminal or alternatively load the updated bash configuration file:
+#### `direnv`
 
-```sh
-source ~/.zshrc
-```
+Parts of this tutorial use [`direnv`](https://direnv.net) as a way of loading environment variables from `.envrc` files into your shell.
+This means you won't have to manually export environment variables every time you want to use them.
+`direnv` only ever has access to files that you explicitly allow it to see.
+
+After [installing `direnv`](https://direnv.net/docs/installation.html), you will need to **make sure that [`direnv` is hooked into your shell](https://direnv.net/docs/hook.html)**.
+Make sure you've followed [the guide on the `direnv` website](https://direnv.net/docs/hook.html), then **close your terminal and reopen it** so that the changes take effect (or `source` your config file if you know how to do that).
+
+::: warning
+Make sure that you have correctly hooked `direnv` into your shell by modifying your shell configuration file (like `~/.bashrc` or `~/.zshrc`).
+If you haven't edited a config file thens you probably haven't configured `direnv` properly (and things might not work later).
+:::
+
+## Get Access to a Sepolia Node
+
+We'll be deploying a OP Stack Rollup chain that uses a Layer 1 blockchain to host and order transaction data.
+The OP Stack Rollups were designed to use EVM Equivalent blockchains like Ethereum, OP Mainnet, or standard Ethereum testnets as their L1 chains.
+
+**This guide uses the Sepolia testnet as an L1 chain**.
+We recommend that you also use Sepolia.
+You can also use use other EVM-compatible blockchains, but you may run into unexpected errors.
+If you want to use an alternative network, make sure to carefully review each command and replace any Sepolia-specific values with the values for your network.
+
+Since we're deploying our OP Stack chain to Sepolia, you'll need to have access to a Sepolia node.
+You can either use a node provider like [Alchemy](https://www.alchemy.com/) (easier) or run your own Sepolia node (harder).
 
 ## Build the Source Code
 
-We’re going to be spinning up an EVM Rollup from the OP Stack source code.  You could use docker images, but this way we keep the option to modify component behavior if you need to do so. The OP Stack source code is split between two repositories, the [Optimism Monorepo](https://github.com/ethereum-optimism/optimism) and the [`op-geth`](https://github.com/ethereum-optimism/op-geth) repository.
+We're going to be spinning up our OP Stack chain directly from source code instead of using a container system like [Docker](https://www.docker.com/).
+Although this adds a few extra steps, it means you'll have an easier time modifying the behavior of the stack if you'd like to do so.
+If you want a summary of the various components we'll be using, take another look at the [What We're Going to Deploy](#what-were-going-to-deploy) section above.
+
+::: warning
+We're using the home directory `~/` as the work directory for this tutorial for simplicity.
+You can use any directory you'd like but using the home directory will allow you to copy/paste the commands in this guide.
+If you choose to use a different directory, make sure you're using the correct directory in the commands throughout this tutorial.
+:::
 
 ### Build the Optimism Monorepo
 
-1. Clone the [Optimism Monorepo](https://github.com/ethereum-optimism/optimism).
+#### 1. Clone the Optimism Monorepo
 
-    ```bash
-    cd ~
-    git clone --recurse-submodules https://github.com/ethereum-optimism/optimism.git
-    ```
-
-1. Enter the Optimism Monorepo.
-
-    ```bash
-    cd optimism
-    ```
-
-1. Install required modules. This is a slow process, while it is running you can already start building `op-geth`, as shown below.
-
-    ```bash
-    pnpm install
-    ```
-
-1. Build the various packages inside of the Optimism Monorepo.
-
-    ```bash
-    make op-node op-batcher op-proposer
-    pnpm build
-    ```
-
-### Build op-geth
-
-1. Clone [`op-geth`](https://github.com/ethereum-optimism/op-geth):
-
-    ```bash
-    cd ~
-    git clone https://github.com/ethereum-optimism/op-geth.git
-    ```
-
-1. Enter `op-geth`:
-
-    ```bash
-    cd op-geth
-    ```
-
-1. Build `op-geth`:
-
-    ```bash
-    make geth
-    ```
-
-## Get access to a Goerli node
-
-Since we’re deploying our OP Stack chain to Goerli, you’ll need to have access to a Goerli L1 node. You can either use a node provider like [Alchemy](https://www.alchemy.com/) (easier) or [run your own Goerli node](https://notes.ethereum.org/@launchpad/goerli) (harder).
-
-## Generate some keys
-
-You’ll need four accounts and their private keys when setting up the chain:
-
-- The `Admin` account which has the ability to upgrade contracts.
-- The `Batcher` account which publishes Sequencer transaction data to L1.
-- The `Proposer` account which publishes L2 transaction results to L1.
-- The `Sequencer` account which signs blocks on the p2p network.
-
-You can generate all of these keys with the `rekey` tool in the `contracts-bedrock` package.
-
-
-1. Enter the Optimism Monorepo:
-
-    ```bash
-    cd optimism
-    ```
-
-1. Move into the `contracts-bedrock` package:
-
-    ```bash
-    cd packages/contracts-bedrock
-    ```
-
-1. Use `cast wallet` to generate new accounts
-
-    ```bash
-    echo "Admin:"
-    cast wallet new
-    echo "Proposer:"
-    cast wallet new
-    echo "Batcher:"
-    cast wallet new
-    echo "Sequencer:"
-    cast wallet new
-    ```
-
-You should get an output like the following:
-
-```
-Admin:
-Successfully created new keypair.
-Address:     0x9f92bdF0db69264462FC305913960Edfcc7a7c7F
-Private key: 0x30e66956e1a12b81f0f2cfb982286b2f566eb73649833831d9f80b12f8fa183c
-Proposer:
-Successfully created new keypair.
-Address:     0x31dE9B6473fc47af36ec23878bA34824B9F4AB30
-Private key: 0x8bd1c8dfffef880f8f9ab8162f97ccd119c1aac28fe00dacf919459f88e0f37d
-Batcher:
-Successfully created new keypair.
-Address:     0x6A3DC843843139f17Fcf04C057bb536A421DC9c6
-Private key: 0x3ce44144b7fde797a28f4e47b210a4d42c3a3b642e538b54458cba2740db5ac2
-Sequencer:
-Successfully created new keypair.
-Address:     0x98C6cadB1fe77aBB7bD968fC3E9b206111e72848
-Private key: 0x3f4241229bb6f155140d98e0f5dd2aad7ae983f5af5d61555d05eb8e5d9514db
+```bash
+cd ~
+git clone https://github.com/ethereum-optimism/optimism.git
 ```
 
-Save these accounts and their respective private keys somewhere, you’ll need them later. Fund the `Admin` address with a small amount of Goerli ETH as we’ll use that account to deploy our smart contracts. You’ll also need to fund the `Proposer` and `Batcher` address — note that the `Batcher` burns through the most ETH because it publishes transaction data to L1.
+#### 2. Enter the Optimism Monorepo
 
-Recommended funding amounts are as follows:
+```bash
+cd optimism
+```
 
-- `Admin` — 2 ETH
-- `Proposer` — 5 ETH
-- `Batcher` — 10 ETH
+#### 3. Check your dependencies
 
-::: danger Not for production deployments
-
-The `cast wallet new` tool is *not* designed for production deployments. If you are deploying an OP Stack based chain into production, you should likely be using a combination of hardware security modules and hardware wallets.
-
+::: warning
+Don't skip this step! Make sure you have all of the required dependencies installed before continuing.
 :::
 
-## Configure your network
+Run the following script and double check that you have all of the required versions installed.
+If you don't have the correct versions installed, you may run into unexpected errors.
 
-Once you’ve built both repositories, you’ll need to head back to the Optimism Monorepo to set up the configuration for your chain. Currently, chain configuration lives inside of the [`contracts-bedrock`](https://github.com/ethereum-optimism/optimism/tree/129032f15b76b0d2a940443a39433de931a97a44/packages/contracts-bedrock) package.
+```bash
+./packages/contracts-bedrock/scripts/getting-started/versions.sh
+```
 
-1. Enter the Optimism Monorepo:
+#### 4. Install dependencies
 
-   ```bash
-   cd ~/optimism
-   ```
+```bash
+pnpm install
+```
 
-1. Move into the `contracts-bedrock` package:
+#### 5. Build the various packages inside of the Optimism Monorepo
 
-   ```bash
-   cd packages/contracts-bedrock
-   ```
+```bash
+make op-node op-batcher op-proposer
+pnpm build
+```
 
-1. Inside of `contracts-bedrock`, copy the environment file
+### Build `op-geth`
 
-   ```sh
-   cp .envrc.example .envrc
-   ```
+#### 1. Clone op-geth
 
-1. Fill out the environment variables inside of that file:
+```bash
+cd ~
+git clone https://github.com/ethereum-optimism/op-geth.git
+```
 
-    - `ETH_RPC_URL` — URL for your L1 node.
-    - `PRIVATE_KEY` — Private key of the `Admin` account.
-    - `DEPLOYMENT_CONTEXT` - Name of the network, should be "getting-started"
+#### 2. Enter op-geth
 
-::: tip Using `direnv`
+```bash
+cd op-geth
+```
+
+#### 3. Build op-geth
+
+```bash
+make geth
+```
+
+
+## Fill Out Environment Variables
+
+You'll need to fill out a few environment variables before we can start deploying our chain.
+
+#### 1. Enter the Optimism Monorepo
+
+```bash
+cd ~/optimism
+```
+
+#### 2. Duplicate the sample environment variable file
+
+```bash
+cp .envrc.example .envrc
+```
+
+#### 3. Fill out the environment variable file
+
+Open up the environment variable file and fill out the following variables:
+
+| Variable Name | Description |
+| --- | --- |
+| `L1_RPC_URL` | URL for your L1 node (a Sepolia node in this case). |
+| `L1_RPC_KIND` | Kind of L1 RPC you're connecting to, used to inform optimal transactions receipts fetching. Valid options: `alchemy`, `quicknode`, `infura`, `parity`, `nethermind`, `debug_geth`, `erigon`, `basic`, `any`. |
+
+## Generate Accounts
+
+You'll need four accounts and their private keys when setting up the chain:
+
+- The `Admin` account has the ability to upgrade contracts.
+- The `Batcher` account publishes Sequencer transaction data to L1.
+- The `Proposer` account publishes L2 transaction results (state roots) to L1.
+- The `Sequencer` account signs blocks on the p2p network.
+
+#### 1. Enter the Optimism Monorepo
+
+```bash
+cd ~/optimism
+```
+
+#### 2. Generate new accounts
+
+::: danger
+You should **not** use the `wallets.sh` tool for production deployments.
+If you are deploying an OP Stack based chain into production, you should likely be using a combination of hardware security modules and hardware wallets.
+:::
+
+```bash
+./packages/contracts-bedrock/scripts/getting-started/wallets.sh
+```
+
+#### 3. Check the output
+
+Make sure that you see output that looks something like the following:
+
+```text
+Copy the following into your .envrc file:
+ 
+# Admin account
+export GS_ADMIN_ADDRESS=0x9625B9aF7C42b4Ab7f2C437dbc4ee749d52E19FC
+export GS_ADMIN_PRIVATE_KEY=0xbb93a75f64c57c6f464fd259ea37c2d4694110df57b2e293db8226a502b30a34
+ 
+# Batcher account
+export GS_BATCHER_ADDRESS=0xa1AEF4C07AB21E39c37F05466b872094edcf9cB1
+export GS_BATCHER_PRIVATE_KEY=0xe4d9cd91a3e53853b7ea0dad275efdb5173666720b1100866fb2d89757ca9c5a
+ 
+# Proposer account
+export GS_PROPOSER_ADDRESS=0x40E805e252D0Ee3D587b68736544dEfB419F351b
+export GS_PROPOSER_PRIVATE_KEY=0x2d1f265683ebe37d960c67df03a378f79a7859038c6d634a61e40776d561f8a2
+ 
+# Sequencer account
+export GS_SEQUENCER_ADDRESS=0xC06566E8Ec6cF81B4B26376880dB620d83d50Dfb
+export GS_SEQUENCER_PRIVATE_KEY=0x2a0290473f3838dbd083a5e17783e3cc33c905539c0121f9c76614dda8a38dca
+```
+
+#### 4. Save the accounts
+
+Copy the output from the previous step and paste it into your `.envrc` file as directed.
+
+#### 5. Fund the accounts
+
+**You will need to send ETH to the `Admin`, `Proposer`, and `Batcher` accounts.**
+The exact amount of ETH required depends on the L1 network being used.
+**You do not need to send any ETH to the `Sequencer` account as it does not send transactions.**
+
+We recommend funding the accounts with the following amounts when using Sepolia:
+
+- `Admin` — 0.2 ETH
+- `Proposer` — 0.2 ETH
+- `Batcher` — 0.1 ETH
+
+## Load Environment variables
+
+Now that we've filled out the environment variable file, we need to load those variables into our terminal.
+
+#### 1. Enter the Optimism Monorepo
+
+```bash
+cd ~/optimism
+```
+
+#### 2. Load the variables with direnv
+
+::: warning
 We're about to use `direnv` to load environment variables from the `.envrc` file into our terminal.
 Make sure that you've [installed `direnv`](https://direnv.net/docs/installation.html) and that you've properly [hooked `direnv` into your shell](#configuring-direnv).
 :::
 
-1. Pull the environment variables into context using `direnv`
+Next you'll need to allow `direnv` to read this file and load the variables into your terminal using the following command.
 
-    ```bash
-    direnv allow .
-    ```
-
-::: tip Make sure `direnv` worked properly
-When you run `direnv allow .`, you should see output something like the following (may not be exact, don't worry about it):
-```sh
-direnv: loading ~/Projects/optimism/packages/contracts-bedrock/.envrc
-direnv: export +DEPLOYMENT_CONTEXT +ETHERSCAN_API_KEY +ETH_RPC_URL +IMPL_SALT +PRIVATE_KEY +TENDERLY_PROJECT +TENDERLY_USERNAME
+```bash
+direnv allow
 ```
 
-If you don't see this output, you likely haven't [properly configured `direnv`](#configuring-direnv).
-Make sure to do that and run `direnv allow .` again.
+::: warning
+WARNING: `direnv` will unload itself whenever your `.envrc` file changes.
+**You *must* rerun the following command every time you change the `.envrc` file.**
 :::
 
-::: tip Deterministic deployments
-The OP Stack uses deterministic deployments by deploying smart contracts via CREATE2.
-The address of each deployed contract is based on a 32 byte `salt` value within the configuration (`IMPL_SALT`).
-The default `.envrc` file sets this salt to a random value via `export IMPL_SALT=$(openssl rand -hex 32)`.
-Whenever you use `direnv allow .`, this file is reloaded and the random salt is recomputed.
-If you want to redeploy your contracts, make sure to reload this file with `direnv allow .` so that you get new contract addresses and don't run into any deployment errors.
-:::
+#### 3. Confirm that the variables were loaded
 
-1. Before we can create our configuration file, we’ll need to pick an L1 block to serve as the starting point for our Rollup. It’s best to use a finalized L1 block as our starting block. You can use the `cast` command provided by Foundry to grab all of the necessary information:
+After running `direnv allow` you should see output that looks something like the following (the exact output will vary depending on the variables you've set, don't worry if it doesn't look exactly like this):
 
-    ```bash
-    cast block finalized --rpc-url $ETH_RPC_URL | grep -E "(timestamp|hash|number)"
-    ```
+```bash
+direnv: loading ~/optimism/.envrc                                                            
+direnv: export +DEPLOYMENT_CONTEXT +ETHERSCAN_API_KEY +GS_ADMIN_ADDRESS +GS_ADMIN_PRIVATE_KEY +GS_BATCHER_ADDRESS +GS_BATCHER_PRIVATE_KEY +GS_PROPOSER_ADDRESS +GS_PROPOSER_PRIVATE_KEY +GS_SEQUENCER_ADDRESS +GS_SEQUENCER_PRIVATE_KEY +IMPL_SALT +L1_RPC_KIND +L1_RPC_URL +PRIVATE_KEY +TENDERLY_PROJECT +TENDERLY_USERNAME
+```
 
-    You’ll get back something that looks like the following:
+**If you don't see this output, you likely haven't [properly configured `direnv`](#configuring-direnv).**
+Make sure you've configured `direnv` properly and run `direnv allow` again so that you see the desired output.
 
-    ```
-    hash                 0x784d8e7f0e90969e375c7d12dac7a3df6879450d41b4cb04d4f8f209ff0c4cd9
-    number               8482289
-    timestamp            1676253324
-    ```
+## Configure your network
 
-1. Fill out the remainder of the pre-populated config file found at [`deploy-config/getting-started.json`](https://github.com/ethereum-optimism/optimism/blob/develop/packages/contracts-bedrock/deploy-config/getting-started.json). Use the default values in the config file and make following modifications:
+Once you've built both repositories, you'll need head back to the Optimism Monorepo to set up the configuration file for your chain.
+Currently, chain configuration lives inside of the [`contracts-bedrock`](https://github.com/ethereum-optimism/optimism/tree/129032f15b76b0d2a940443a39433de931a97a44/packages/contracts-bedrock) package in the form of a JSON file.
 
-    - Replace `"ADMIN"` with the address of the Admin account you generated earlier.
-    - Replace `"PROPOSER"` with the address of the Proposer account you generated earlier.
-    - Replace `"BATCHER"` with the address of the Batcher account you generated earlier.
-    - Replace `"SEQUENCER"` with the address of the Sequencer account you generated earlier.
-    - Replace `"BLOCKHASH"` with the blockhash you got from the `cast` command.
-    - Replace `TIMESTAMP` with the timestamp you got from the `cast` command. Note that although all the other fields are strings, this field is a number! Don’t include the quotation marks.
+#### 1. Enter the Optimism Monorepo
+
+```bash
+cd ~/optimism
+```
+
+#### 2. Move into the contracts-bedrock package
+
+```bash
+cd packages/contracts-bedrock
+```
+
+#### 3. Generate the configuration file
+
+Run the following script to generate the `getting-started.json` configuration file inside of the `deploy-config` directory.
+
+```bash
+./scripts/getting-started/config.sh
+```
+
+#### 4. Review the configuration file (Optional)
+
+If you'd like, you can review the configuration file that was just generated by opening up `deploy-config/getting-started.json` in your favorite text editor.
+We recommend keeping this file as-is for now so you don't run into any unexpected errors.
 
 ## Deploy the L1 contracts
 
-Once you’ve configured your network, it’s time to deploy the L1 smart contracts necessary for the functionality of the chain.
+Once you've configured your network, it's time to deploy the L1 contracts necessary for the functionality of the chain.
 
-1. Create a `getting-started` deployment directory.
+#### 1. Deploy the L1 contracts
 
-   ```bash
-   mkdir deployments/getting-started
-   ```
+```bash
+forge script scripts/Deploy.s.sol:Deploy --private-key $GS_ADMIN_PRIVATE_KEY --broadcast --rpc-url $L1_RPC_URL
+```
 
+::: warning
+If you see a nondescript error that includes `EvmError: Revert` and `Script failed` then you likely need to change the `IMPL_SALT` environment variable.
+This variable determines the addresses of various smart contracts that are deployed via [CREATE2](https://eips.ethereum.org/EIPS/eip-1014).
+If the same `IMPL_SALT` is used to deploy the same contracts twice, the second deployment will fail.
+**You can generate a new `IMPL_SALT` by running `direnv allow` anywhere in the Optimism Monorepo.**
+:::
 
-1. Once you’re ready, deploy the L1 smart contracts.
+#### 2. Generate contract artifacts
 
-    ```bash
-    forge script scripts/Deploy.s.sol:Deploy --private-key $PRIVATE_KEY --broadcast --rpc-url $ETH_RPC_URL
-    forge script scripts/Deploy.s.sol:Deploy --sig 'sync()' --private-key $PRIVATE_KEY --broadcast --rpc-url $ETH_RPC_URL
-    ```
-
-Contract deployment can take up to 15 minutes. Please wait for all smart contracts to be fully deployed before continuing to the next step.
+```bash
+forge script scripts/Deploy.s.sol:Deploy --sig 'sync()' --rpc-url $L1_RPC_URL
+```
 
 ## Generate the L2 config files
 
-We’ve set up the L1 side of things, but now we need to set up the L2 side of things. We do this by generating three important files, a `genesis.json` file, a `rollup.json` configuration file, and a `jwt.txt` [JSON Web Token](https://jwt.io/introduction) that allows the `op-node` and `op-geth` to communicate securely.
+Now that we've set up the L1 smart contracts we can automatically generate several configuration files that are used within the Consensus Client and the Execution Client.
 
-1. Head over to the `op-node` package.
+We need to generate three important files:
 
-    ```bash
-    cd ~/optimism/op-node
-    ```
+1. `genesis.json` includes the genesis state of the chain for the Execution Client.
+1. `rollup.json` includes configuration information for the Consensus Client.
+1. `jwt.txt` is a [JSON Web Token](https://jwt.io/introduction) that allows the Consensus Client and the Execution Client to communicate securely (the same mechanism is used in Ethereum clients).
 
-1. Run the following command, and make sure to replace `<RPC>` with your L1 RPC URL:
-
-    ```bash
-    go run cmd/main.go genesis l2 \
-        --deploy-config ../packages/contracts-bedrock/deploy-config/getting-started.json \
-        --deployment-dir ../packages/contracts-bedrock/deployments/getting-started/ \
-        --outfile.l2 genesis.json \
-        --outfile.rollup rollup.json \
-        --l1-rpc <RPC>
-    ```
-
-    You should then see the `genesis.json` and `rollup.json` files inside the `op-node` package.
-
- 1. Next, generate the `jwt.txt` file with the following command:
-
-    ```bash
-    openssl rand -hex 32 > jwt.txt
-    ```
-
-1. Finally, we’ll need to copy the `genesis.json` file and `jwt.txt` file into `op-geth` so we can use it to initialize and run `op-geth` in just a minute:
-
-    ```bash
-    cp genesis.json ~/op-geth
-    cp jwt.txt ~/op-geth
-    ```
-
-## Initialize op-geth
-
-We’re almost ready to run our chain! Now we just need to run a few commands to initialize `op-geth`. We’re going to be running a Sequencer node, so we’ll need to import the `Sequencer` private key that we generated earlier. This private key is what our Sequencer will use to sign new blocks.
-
-1. Head over to the `op-geth` repository:
-
-    ```bash
-    cd ~/op-geth
-    ```
-
-1. Create a data directory folder:
-
-    ```bash
-    mkdir datadir
-    ```
-
-1. Next we need to initialize `op-geth` with the genesis file we generated and copied earlier:
-
-    ```bash
-    build/bin/geth init --datadir=datadir genesis.json
-    ```
-
-Everything is now initialized and ready to go!
-
-
-## Run the node software
-
-There are four components that need to run for a rollup.
-The first two, `op-geth` and `op-node`, have to run on every node.
-The other two, `op-batcher` and `op-proposer`, run only in one place, the sequencer that accepts transactions.
-
-### Set environment variables
-
-You will need to set several environment variables in your shell manually for this next section. Environment variables can be set by using the `export` command. For example, to set the `SEQ_KEY`, execute the following:
-
-```sh
-export SEQ_KEY=paste_your_sequencer_private_key_here
-```
-
-Repeat this `export` process for all of the variables listed below:
-
-| Variable       | Value |
-| -------------- | ----- |
-| `SEQ_KEY`      | Private key of the `Sequencer` account you generated earlier. |
-| `BATCHER_KEY`  | Private key of the `Batcher` accounts you generated earlier. |
-| `PROPOSER_KEY` | Private key of the `Proposer` account you generated earlier. |
-| `L1_RPC`       | URL for the L1 (e.g., Goerli) RPC provider you're using. |
-| `RPC_KIND`     | The kind of RPC provider, used to inform optimal transactions receipts fetching, and thus reduce costs. Valid options: `alchemy`, `quicknode`, `infura`, `parity`, `nethermind`, `debug_geth`, `erigon`, `basic`, `any`. |
-| `L2OO_ADDR`    | The address of the `L2OutputOracleProxy`, available at `~/optimism/packages/contracts-bedrock/deployments/getting-started/L2OutputOracleProxy.json`. |
-
-### `op-geth`
-
-Run `op-geth` with the following commands.
-
-```bash
-cd ~/op-geth
-
-./build/bin/geth \
-        --datadir ./datadir \
-        --http \
-        --http.corsdomain="*" \
-        --http.vhosts="*" \
-        --http.addr=0.0.0.0 \
-        --http.api=web3,debug,eth,txpool,net,engine \
-        --ws \
-        --ws.addr=0.0.0.0 \
-        --ws.port=8546 \
-        --ws.origins="*" \
-        --ws.api=debug,eth,txpool,net,engine \
-        --syncmode=full \
-        --gcmode=archive \
-        --nodiscover \
-        --maxpeers=0 \
-        --networkid=42069 \
-        --authrpc.vhosts="*" \
-        --authrpc.addr=0.0.0.0 \
-        --authrpc.port=8551 \
-        --authrpc.jwtsecret=./jwt.txt \
-        --rollup.disabletxpoolgossip=true
-```
-
-And `op-geth` should be running! You should see some output, but you won’t see any blocks being created yet because `op-geth` is driven by the `op-node`. We’ll need to get that running next.
-
-::: tip Why archive mode?
-
-Archive mode takes more disk storage than full mode.
-However, using it is important for two reasons:
-
-- The `op-proposer` requires access to the full state.
-  If at some point `op-proposer` needs to look beyond 256 blocks in the past (8.5 minutes in the default configuration), for example because it was down for that long, we need archive mode.
-
-- The [explorer](./explorer.md) requires archive mode.
-
-:::
-
-#### Reinitializing op-geth
-
-There are several situations are indicate database corruption and require you to reset the `op-geth` component:
-
-- When `op-node` errors out when first started and exits.
-- When `op-node` emits this error:
-
-  ```
-  stage 0 failed resetting: temp: failed to find the L2 Heads to start from: failed to fetch L2 block by hash 0x0000000000000000000000000000000000000000000000000000000000000000
-  ```
-
-This is the reinitialization procedure:
-
-1. Stop the `op-geth` process.
-1. Delete the geth data.
-
-    ```bash
-    cd ~/op-geth
-    rm -rf datadir/geth
-    ```
-
-1. Rerun init.
-
-    ```bash
-    build/bin/geth init --datadir=datadir genesis.json
-    ```
-
-1. Start `op-geth`
-
-1. Start `op-node`
-
-
-### `op-node`
-
-Once we’ve got `op-geth` running we’ll need to run `op-node`. Like Ethereum, the OP Stack has a consensus client (the `op-node`) and an execution client (`op-geth`). The consensus client drives the execution client over the Engine API.
+#### 1. Navigate to the op-node package
 
 ```bash
 cd ~/optimism/op-node
+```
 
+#### 2. Create genesis files
+
+Now we'll generate the `genesis.json` and `rollup.json` files within the `op-node` folder:
+
+```bash
+go run cmd/main.go genesis l2 \
+    --deploy-config ../packages/contracts-bedrock/deploy-config/getting-started.json \
+    --deployment-dir ../packages/contracts-bedrock/deployments/getting-started/ \
+    --outfile.l2 genesis.json \
+    --outfile.rollup rollup.json \
+    --l1-rpc $L1_RPC_URL
+```
+
+#### 3. Create an authentication key
+
+Next you'll create a [JSON Web Token](https://jwt.io/introduction) that will be used to authenticate the Consensus Client and the Execution Client.
+This token is used to ensure that only the Consensus Client and the Execution Client can communicate with each other.
+You can generate a JWT with the following command:
+
+```bash
+openssl rand -hex 32 > jwt.txt
+```
+
+#### 4. Copy genesis files into the op-geth directory
+
+Finally, we'll need to copy the `genesis.json` file and `jwt.txt` file into `op-geth` so we can use it to initialize and run `op-geth`:
+
+```bash
+cp genesis.json ~/op-geth
+cp jwt.txt ~/op-geth
+```
+
+## Initialize `op-geth`
+
+We're almost ready to run our chain!
+Now we just need to run a few commands to initialize `op-geth`.
+We're going to be running a Sequencer node, so we'll need to import the `Sequencer` private key that we generated earlier.
+This private key is what our Sequencer will use to sign new blocks.
+
+#### 1. Navigate to the op-geth directory
+
+```bash
+cd ~/op-geth
+```
+
+#### 2. Create a data directory folder
+
+```bash
+mkdir datadir
+```
+
+#### 3. Initialize op-geth
+
+```bash
+build/bin/geth init --datadir=datadir genesis.json
+```
+
+## Start `op-geth`
+
+Now we'll start `op-geth`, our Execution Client.
+Note that you won't start seeing any transactions until you start the Consensus Client in the next step.
+
+#### 1. Open up a new terminal
+
+We'll need a terminal window to run `op-geth` in.
+
+#### 2. Navigate to the op-geth directory
+
+```bash
+cd ~/op-geth
+```
+
+#### 3. Run op-geth
+
+::: tip
+We're using `--gcmode=archive` to run `op-geth` here because this node will act as our Sequencer.
+It's useful to run the Sequencer in archive mode because the `op-proposer` requires access to the full state.
+Feel free to run other (non-Sequencer) nodes in full mode if you'd like to save disk space.
+:::
+
+```bash
+./build/bin/geth \
+    --datadir ./datadir \
+    --http \
+    --http.corsdomain="*" \
+    --http.vhosts="*" \
+    --http.addr=0.0.0.0 \
+    --http.api=web3,debug,eth,txpool,net,engine \
+    --ws \
+    --ws.addr=0.0.0.0 \
+    --ws.port=8546 \
+    --ws.origins="*" \
+    --ws.api=debug,eth,txpool,net,engine \
+    --syncmode=full \
+    --gcmode=archive \
+    --nodiscover \
+    --maxpeers=0 \
+    --networkid=42069 \
+    --authrpc.vhosts="*" \
+    --authrpc.addr=0.0.0.0 \
+    --authrpc.port=8551 \
+    --authrpc.jwtsecret=./jwt.txt \
+    --rollup.disabletxpoolgossip=true
+```
+
+## Start `op-node`
+
+Once we've got `op-geth` running we'll need to run `op-node`.
+Like Ethereum, the OP Stack has a Consensus Client (`op-node`) and an Execution Client (`op-geth`). 
+The Consensus Client "drives" the Execution Client over the Engine API.
+
+#### 1. Open up a new terminal
+
+We'll need a terminal window to run the `op-node` in.
+
+#### 2. Navigate to the op-node directory
+
+```bash
+cd ~/optimism/op-node
+```
+
+#### 3. Run op-node
+
+```bash
 ./bin/op-node \
-	--l2=ws://localhost:8551 \
+	--l2=http://localhost:8551 \
 	--l2.jwt-secret=./jwt.txt \
 	--sequencer.enabled \
 	--sequencer.l1-confs=5 \
@@ -496,21 +524,23 @@ cd ~/optimism/op-node
 	--rpc.port=8547 \
 	--p2p.disable \
 	--rpc.enable-admin \
-	--p2p.sequencer.key=$SEQ_KEY \
-	--l1=$L1_RPC \
-	--l1.rpckind=$RPC_KIND
+	--p2p.sequencer.key=$GS_SEQUENCER_PRIVATE_KEY \
+	--l1=$L1_RPC_URL \
+	--l1.rpckind=$L1_RPC_KIND
 ```
 
-Once you run this command, you should start seeing the `op-node` begin to process all of the L1 information after the starting block number that you picked earlier. Once the `op-node` has enough information, it’ll begin sending Engine API payloads to `op-geth`. At that point, you’ll start to see blocks being created inside of `op-geth`. We’re live!
+Once you run this command, you should start seeing the `op-node` begin to sync L2 blocks from the L1 chain.
+Once the `op-node` has caught up to the tip of the L1 chain, it'll begin to send blocks to `op-geth` for execution.
+At that point, you'll start to see blocks being created inside of `op-geth`.
 
+::: tip
+**By default, your `op-node` will try to use a peer-to-peer to speed up the synchronization process.**
+If you're using a chain ID that is also being used by others, like the default chain ID for this tutorial (42069), your `op-node` will receive blocks signed by other sequencers.
+These requests will fail and waste time and network resources.
+**To avoid this, we start with peer-to-peer synchronization disabled (`--p2p.disable`).**
 
-::: tip Peer to peer synchronization
-
-If you use a chain ID that is also used by others, for example the default (42069), your `op-node` will try to use peer to peer to speed up synchronization.
-These attempts will fail, because they will be signed with the wrong key, but they will waste time and network resources.
-
-To avoid this, we start with peer to peer synchronization disabled (`--p2p.disable`).
-Once you have multiple nodes, it makes sense to use these command line parameters to synchronize between them without getting confused by other blockchains.
+Once you have multiple nodes, you may want to enable peer-to-peer synchronization.
+You can add the following options to the `op-node` command to enable peer-to-peer synchronization with specific nodes:
 
 ```
 	--p2p.static=<nodes> \
@@ -519,21 +549,31 @@ Once you have multiple nodes, it makes sense to use these command line parameter
 	--p2p.listen.udp=9003 \
 ```
 
+You can alternatively also remove the `--p2p.static` option but you may see failed requests from other chains using the same chain ID.
 :::
 
+## Start `op-batcher`
 
+The `op-batcher` takes transactions from the Sequencer and publishes those transactions to L1.
+Once these Sequencer transactions are included in a finalized L1 block, they're officially part of the canonical chain.
+The `op-batcher` is critical!
 
+It's best to give the `Batcher` account at least 1 Sepolia ETH to ensure that it can continue operating without running out of ETH for gas.
+Keep an eye on the balance of the `Batcher` account because it can expend ETH quickly if there are a lot of transactions to publish.
 
-### `op-batcher`
+#### 1. Open up a new terminal
 
-The `op-batcher` takes transactions from the Sequencer and publishes those transactions to L1. Once transactions are on L1, they’re officially part of the Rollup. Without the `op-batcher`, transactions sent to the Sequencer would never make it to L1 and wouldn’t become part of the canonical chain. The `op-batcher` is critical!
+We'll need a terminal window to run the `op-batcher` in.
 
-It is best to give the `Batcher` at least 1 Goerli ETH to ensure that it can continue operating without running out of ETH for gas.
-
+#### 2. Navigate to the op-batcher directory
 
 ```bash
 cd ~/optimism/op-batcher
+```
 
+#### 3. Run op-batcher
+
+```bash
 ./bin/op-batcher \
     --l2-eth-rpc=http://localhost:8545 \
     --rollup-rpc=http://localhost:8547 \
@@ -546,152 +586,79 @@ cd ~/optimism/op-batcher
     --rpc.port=8548 \
     --rpc.enable-admin \
     --max-channel-duration=1 \
-    --l1-eth-rpc=$L1_RPC \
-    --private-key=$BATCHER_KEY
+    --l1-eth-rpc=$L1_RPC_URL \
+    --private-key=$GS_BATCHER_PRIVATE_KEY
 ```
 
-::: tip Controlling batcher costs
-
+::: tip
 The `--max-channel-duration=n` setting tells the batcher to write all the data to L1 every `n` L1 blocks.
-When it is low, transactions are written to L1 frequently, withdrawals are quick, and other nodes can synchronize from L1 fast.
-When it is high, transactions are written to L1 less frequently, and the batcher spends less ETH.
-
+When it is low, transactions are written to L1 frequently and other nodes can synchronize from L1 quickly.
+When it is high, transactions are written to L1 less frequently and the batcher spends less ETH.
+If you want to reduce costs, either set this value to 0 to disable it or increase it to a higher value.
 :::
 
-### `op-proposer`
+## Start `op-proposer`
 
 Now start `op-proposer`, which proposes new state roots.
 
+#### 1. Open up a new terminal
+
+We'll need a terminal window to run the `op-proposer` in.
+
+#### 2. Navigate to the op-proposer directory
+
 ```bash
 cd ~/optimism/op-proposer
+```
 
+#### 3. Run op-proposer
+
+```bash
 ./bin/op-proposer \
     --poll-interval=12s \
     --rpc.port=8560 \
     --rollup-rpc=http://localhost:8547 \
-    --l2oo-address=$L2OO_ADDR \
-    --private-key=$PROPOSER_KEY \
-    --l1-eth-rpc=$L1_RPC
+    --l2oo-address=$(cat ../packages/contracts-bedrock/deployments/getting-started/L2OutputOracleProxy.json | jq -r .address) \
+    --private-key=$GS_PROPOSER_PRIVATE_KEY \
+    --l1-eth-rpc=$L1_RPC_URL
 ```
 
+## Connect Your Wallet to Your Chain
 
-## Get some ETH on your Rollup
+You now have a fully functioning OP Stack Rollup with a Sequencer node running on `http://localhost:8545`.
+You can connect your wallet to this chain the same way you'd connect your wallet to any other EVM chain.
+If you need an easy way to connect to your chain, just [click here](https://chainid.link?network=opstack-getting-started).
 
-Once you’ve connected your wallet, you’ll probably notice that you don’t have any ETH on your Rollup. You’ll need some ETH to pay for gas on your Rollup. The easiest way to deposit Goerli ETH into your chain is to send funds directly to the `L1StandardBridge` contract. You can find the address of the `L1StandardBridge` contract for your chain by looking inside the `deployments` folder in the `contracts-bedrock` package.
+## Get ETH On Your Chain
 
-1. First, head over to the `contracts-bedrock` package:
+Once you've connected your wallet, you'll probably notice that you don't have any ETH to pay for gas on your chain.
+The easiest way to deposit Sepolia ETH into your chain is to send funds directly to the `L1StandardBridge` contract.
 
-    ```bash
-    cd ~/optimism/packages/contracts-bedrock
-    ```
-
-1. Grab the address of the proxy to the L1 standard bridge contract:
-
-    ```bash
-    cat deployments/getting-started/L1StandardBridgeProxy.json | jq -r .address
-    ```
-
-1. Grab the L1 bridge proxy contract address and, using the wallet that you want to have ETH on your Rollup, send that address a small amount of ETH on Goerli (0.1 or less is fine). It may take up to 5 minutes for that ETH to appear in your wallet on L2.
-
-## Use your Rollup
-
-Congratulations, you made it! You now have a complete OP Stack based EVM Rollup.
-
-To see your rollup in action, you can use the [Optimism Mainnet Getting Started tutorial](https://github.com/ethereum-optimism/optimism-tutorial/blob/main/getting-started). Follow these steps:
-
-1. Clone the tutorials repository.
-
-    ```bash
-    cd ~
-    git clone https://github.com/ethereum-optimism/optimism-tutorial.git
-    ```
-
-1. Change to the Foundry directory of the Getting Started tutorial.
-
-    ```bash
-    cd optimism-tutorial/getting-started/foundry
-    ```
-
-1. Put your mnemonic (for the address where you have ETH, the one that sent ETH to `OptimismPortalProxy` on Goerli) in a file `mnem.delme`.
-1. Provide the URL to your blockchain:
-
-    ```bash
-    export ETH_RPC_URL=http://localhost:8545
-    ```
-
-1. Compile and deploy the `Greeter` contract:
-
-    ```bash
-    forge create --mnemonic-path ./mnem.delme Greeter --constructor-args "hello" \
-        | tee deployment
-    ```
-
-1. Set the greeter to the deployed to address:
-
-    ```bash
-    export GREETER=`cat deployment | awk '/Deployed to:/ {print $3}'`
-    echo $GREETER
-    ```
-
-1. See and modify the greeting
-
-    ```bash
-    cast call $GREETER "greet()" | cast --to-ascii
-    cast send --mnemonic-path ./mnem.delme $GREETER "setGreeting(string)" "New greeting"
-    cast call $GREETER "greet()" | cast --to-ascii
-    ```
-
-To use any other development stack, see the getting started tutorial, just replace the Greeter address with the address of your rollup, and the Optimism Goerli URL with `http://localhost:8545`.
-
-
-### Errors
-
-#### Error Deploying L1 Contracts
-
-The condition arises when deploying to shared networks like mainnet or testnet because the addresses are deterministic. 
-The deployment fails and causes a `CREATE2` collision when the address is already occupied by a different deployment, showing the following error:
-
-`EvmError: Revert`
-
-The L1 contract implementations are deployed using `CREATE2`. The salt value determines the address that the contract is deployed to, and a default salt value is provided which can be overridden with the `IMPL_SALT` environment variable. 
-The **solution** is to use a different salt for each deployment of the implementations because the deployment fails if the contract already exists at that address. 
-See the [`.envrc.example`](https://github.com/ethereum-optimism/optimism/blob/7591f192ddf23b55809d7a1830775f627a1d5307/packages/contracts-bedrock/.envrc.example) file in `contracts-bedrock` for an example of how to do this. 
-
-#### Corrupt data directory
-
-If `op-geth` aborts (for example, because the computer it is running on crashes), you might get these errors on `op-node`:
-
-```
-WARN [02-16|21:22:02.868] Derivation process temporary error       attempts=14 err="stage 0 failed resetting: temp: failed to find the L2 Heads to start from: failed to fetch L2 block by hash 0x0000000000000000000000000000000000000000000000000000000000000000: failed to determine block-hash of hash 0x0000000000000000000000000000000000000000000000000000000000000000, could not get payload: not found"
-```
-
-This means that the data directory is corrupt and you need to reinitialize it:
+#### 1. Navigate to the contracts-bedrock directory
 
 ```bash
-cd ~/op-geth
-rm -rf datadir
-mkdir datadir
-echo "pwd" > datadir/password
-echo "<SEQUENCER KEY HERE>" > datadir/block-signer-key
-./build/bin/geth account import --datadir=./datadir --password=./datadir/password ./datadir/block-signer-key
-./build/bin/geth init --datadir=./datadir ./genesis.json
+cd ~/optimism/packages/contracts-bedrock
 ```
 
+#### 2. Get the address of the L1StandardBridgeProxy contract
 
-#### Batcher out of ETH
-
-If `op-batcher` runs out of ETH, it cannot submit write new transaction batches to L1.
-You will get error messages similar to this one:
-
-```
-INFO [03-21|14:22:32.754] publishing transaction                   service=batcher txHash=2ace6d..7eb248 nonce=2516 gasTipCap=2,340,741 gasFeeCap=172,028,434,515
-ERROR[03-21|14:22:32.844] unable to publish transaction            service=batcher txHash=2ace6d..7eb248 nonce=2516 gasTipCap=2,340,741 gasFeeCap=172,028,434,515 err="insufficient funds for gas * price + value"
+```bash
+cat deployments/getting-started/L1StandardBridgeProxy.json | jq -r .address
 ```
 
-Just send more ETH to the batcher, and the problem will be resolved.
+#### 3. Send some Sepolia ETH to the L1StandardBridgeProxy contract
 
+Grab the L1 bridge proxy contract address and, using the wallet that you want to have ETH on your Rollup, send that address a small amount of ETH on Sepolia (0.1 or less is fine).
+This will trigger a deposit that will mint ETH into your wallet on L2.
+It may take up to 5 minutes for that ETH to appear in your wallet on L2.
 
+## See Your Rollup in Action
 
-## What’s next?
+You can interact with your Rollup the same way you'd interact with any other EVM chain.
+Send some transactions, deploy some contracts, and see what happens!
 
-You can use this rollup the same way you’d use any other test blockchain. Once the superchain is available, this blockchain should be able to join the test version. Alternatively, you could [modify the blockchain in various ways](./hacks.md). **Please note that OP Stack Hacks are unofficial and are not explicitly supported by the OP Stack.** You will not be able to receive significant developer support for any modifications you make to the OP Stack.
+## Next Steps
+
+- You can use this Rollup the same way you'd use any other test blockchain.
+- You can [modify the blockchain in various ways](hacks/overview). 
+- If you run into any problems, please visit the [Chain Operators Troubleshooting Guide](chain-troubleshooting) for help.
