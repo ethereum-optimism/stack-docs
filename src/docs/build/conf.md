@@ -13,7 +13,7 @@ OP Stack configuration is an active work in progress and will likely evolve sign
 
 ## New Blockchain Configuration
 
-New OP Stack blockchains are currently configured with a JSON file inside the Optimism repository. The file is `<optimism repository>/packages/contracts-bedrock/deploy-config/<chain name>.json`. For example, [this is the configuration file for the tutorial blockchain](https://github.com/ethereum-optimism/optimism/blob/129032f15b76b0d2a940443a39433de931a97a44/packages/contracts-bedrock/deploy-config/getting-started.json). 
+New OP Stack blockchains are currently configured with a JSON file inside the Optimism repository. The file is `<optimism repository>/packages/contracts-bedrock/deploy-config/<chain name>.json`. For example, [this is the configuration file for OP Mainnet](https://github.com/ethereum-optimism/optimism/blob/8bb597901ff4508062a266ea9928d4bbebe6c936/packages/contracts-bedrock/deploy-config/mainnet.json). 
 
 
 ### Admin accounts

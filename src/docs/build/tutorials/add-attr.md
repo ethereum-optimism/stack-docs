@@ -76,7 +76,7 @@ Deploy this smart contract to your L2 (using any tool you find convenient). Make
 
 ## Add the burn transaction
 
-Now we need to add logic to the `op-node` to automatically submit a burn report whenever an L1 block is produced. Since this transaction is very similar to the system transaction that reports other L1 block info (found in [l1_block_info.go](https://github.com/ethereum-optimism/optimism/blob/c9cd1215b76111888e25ee27a49a0bc0c4eeb0f8/op-node/rollup/derive/l1_block_info.go)), we’ll use that transaction as a jumping-off point. 
+Now we need to add logic to the `op-node` to automatically submit a burn report whenever an L1 block is produced. Since this transaction is very similar to the system transaction that reports other L1 block info (found in [l1_block_info.go](https://github.com/ethereum-optimism/optimism/blob/8bb597901ff4508062a266ea9928d4bbebe6c936/op-node/rollup/derive/l1_block_info.go)), we’ll use that transaction as a jumping-off point. 
 
 1. Navigate to the `op-node` package:
 
