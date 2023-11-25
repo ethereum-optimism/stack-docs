@@ -63,7 +63,7 @@ At the end of the day, the OP Stack becomes what Optimism needs.
 
 Ready to dive into the world of the OP Stack?
 
-- If you’re interested in learning more about the current release of the OP Stack, check out the Bedrock Release page.
+- If you’re interested in learning more about the current release of the OP Stack, check out the [Bedrock Release page](/docs/releases/bedrock/README.md).
 - If you’re interested in understanding the OP Stack in more depth, start with the [Design Principles](/docs/understand/design-principles.md) and [Landscape Overview](/docs/understand/landscape.md).
 - If you're excited to join the Superchain, launch your first Superchain-ready L2 with our [Getting Started guide](/docs/build/getting-started.md) or dive directly into the OP Stack codebase to learn more.
 
