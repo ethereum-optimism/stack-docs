@@ -97,7 +97,7 @@ Make sure you've followed [the guide on the `direnv` website](https://direnv.net
 
 ::: warning
 Make sure that you have correctly hooked `direnv` into your shell by modifying your shell configuration file (like `~/.bashrc` or `~/.zshrc`).
-If you haven't edited a config file thens you probably haven't configured `direnv` properly (and things might not work later).
+If you haven't edited a config file then you probably haven't configured `direnv` properly (and things might not work later).
 :::
 
 ## Get Access to a Sepolia Node
