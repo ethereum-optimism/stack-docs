@@ -123,6 +123,7 @@ If you want a summary of the various components we'll be using, take another loo
 We're using the home directory `~/` as the work directory for this tutorial for simplicity.
 You can use any directory you'd like but using the home directory will allow you to copy/paste the commands in this guide.
 If you choose to use a different directory, make sure you're using the correct directory in the commands throughout this tutorial.
+At the same time, you need to pay attention to the type of your folder partition, because later you will use an IPC file(unix socket), which cannot be placed on a non-Unix partition, that is, it cannot be placed on an NTFS type partition.
 :::
 
 ### Build the Optimism Monorepo
