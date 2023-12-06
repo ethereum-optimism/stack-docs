@@ -36,7 +36,7 @@ Download and install [Docker engine](https://docs.docker.com/engine/install/#ser
 
    ```sh
    cd ~
-   git clone https://github.com/blockscout/blockscout.git
+   git clone https://github.com/blockscout/blockscout.git -b production-optimism
    cd blockscout/docker-compose
    ```
 
@@ -57,7 +57,7 @@ Download and install [Docker engine](https://docs.docker.com/engine/install/#ser
 
 ## Usage
 
-After the docker containers start, browse to http:// < *computer running Blockscout* > :80 to view the user interface. 
+After the docker containers start, browse to http:// < *computer running Blockscout* > to view the user interface. 
 
 You can also use the [API](https://docs.blockscout.com/for-users/api)
 
