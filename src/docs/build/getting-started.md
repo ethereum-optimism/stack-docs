@@ -163,6 +163,7 @@ pnpm install
 
 ```bash
 make op-node op-batcher op-proposer
+pnpm install
 pnpm build
 ```
 
