@@ -13,7 +13,9 @@ export default ({ router }) => {
     const target = redirects[to.path] || redirects[to.path.replace(/\/$/, '')]
     if (target) {
       if (target.startsWith('http://') || target.startsWith('https://')) {
-        window.location.href = target
+        if (typeof window !== 'undefined') {
+          window.location.href = target
+        }
       } else {
         next(target)
       }
