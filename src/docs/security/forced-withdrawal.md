@@ -15,7 +15,7 @@ However, that L2 endpoint can be a read-only replica.
 
 ## Setup 
 
-The code to go along with this article is available in [our tutorials repository](https://github.com/ethereum-optimism/optimism-tutorial/tree/main/op-stack/forced-withdrawal).
+The code to go along with this article is available in [our tutorials repository](https://github.com/ethereum-optimism/optimism-tutorial/tree/b7b5bd9a5691163ad5c40e298222238c13e61cf4/op-stack/forced-withdrawal).
 
 1. Clone the repository, move to the correct directory, and install the required dependencies.
 
@@ -60,7 +60,7 @@ The easiest way to withdraw ETH is to send it to the bridge, or the cross domain
    transferAmt = BigInt(0.01 * 1e18)
    ``` 
 
-1. Create a contract object for the [`OptimismPortal`](https://github.com/ethereum-optimism/optimism/blob/129032f15b76b0d2a940443a39433de931a97a44/packages/contracts-bedrock/contracts/L1/OptimismPortal.sol) contract.
+1. Create a contract object for the [`OptimismPortal`](https://github.com/ethereum-optimism/optimism/blob/8bb597901ff4508062a266ea9928d4bbebe6c936/packages/contracts-bedrock/src/L1/OptimismPortal.sol) contract.
 
    ```js
    optimismContracts = require("@eth-optimism/contracts-bedrock")
@@ -135,7 +135,7 @@ The easiest way to withdraw ETH is to send it to the bridge, or the cross domain
 
 
 1. Create [a cross domain messenger](https://sdk.optimism.io/classes/crosschainmessenger).
-   This step, and subsequent ETH withdrawal steps, are explained in [this tutorial](https://github.com/ethereum-optimism/optimism-tutorial/tree/main/cross-dom-bridge-eth).
+   This step, and subsequent ETH withdrawal steps, are explained in [this tutorial](https://github.com/ethereum-optimism/optimism-tutorial/tree/b7b5bd9a5691163ad5c40e298222238c13e61cf4/cross-dom-bridge-eth).
 
    ```js
    optimismSDK = require("@eth-optimism/sdk")

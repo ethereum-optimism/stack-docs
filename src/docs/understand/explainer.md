@@ -131,7 +131,7 @@ We believe the following changes (after the Bedrock release) are required to cre
 
 ### Upgrade the Bedrock bridge to be a chain factory
 
-Bedrock introduced the [SystemConfig contract](https://github.com/ethereum-optimism/optimism/blob/74a63c94d881442b4edd4df6492513e0113eb064/packages/contracts-bedrock/contracts/L1/SystemConfig.sol) which began to define the L2 chain directly with L1 smart contracts. This can be extended to put *all information* defining the L2 chain, onchain. Including generating a unique chain ID, key configuration values such as block gas limit, etc.
+Bedrock introduced the [SystemConfig contract](https://github.com/ethereum-optimism/optimism/blob/8bb597901ff4508062a266ea9928d4bbebe6c936/packages/contracts-bedrock/src/L1/SystemConfig.sol) which began to define the L2 chain directly with L1 smart contracts. This can be extended to put *all information* defining the L2 chain, onchain. Including generating a unique chain ID, key configuration values such as block gas limit, etc.
 
 Once the chain data is entirely onchain, we can create a factory which deploys the configuration and all other required contracts for each chain. This can be extended further by making the contract addresses deterministic with CREATE2, meaning that given a chain config it is possible to determine all bridge addresses associated with that chain. This also enables chains to be interacted with without having to deploy their bridge contracts, making (counterfactual) chain deployment virtually free, and allowing chains to inherit standard security properties. 
 

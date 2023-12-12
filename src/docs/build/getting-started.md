@@ -30,7 +30,7 @@ It's useful to understand what each of these components does before you start de
 The OP Stack gives you the ability to deploy your own Rollup chains that use a Layer 1 blockchain to host and order transaction data.
 OP Stack chains use several smart contracts on the L1 blockchain to manage aspects of the Rollup.
 Each OP Stack chain has its own set of L1 smart contracts that are deployed when the chain is created.
-We'll be using the L1 smart contracts found in the [`contracts-bedrock` package](https://github.com/ethereum-optimism/optimism/tree/develop/packages/contracts-bedrock) within the [Optimism Monorepo](https://github.com/ethereum-optimism/optimism).
+We'll be using the L1 smart contracts found in the [`contracts-bedrock` package](https://github.com/ethereum-optimism/optimism/tree/8bb597901ff4508062a266ea9928d4bbebe6c936/packages/contracts-bedrock) within the [Optimism Monorepo](https://github.com/ethereum-optimism/optimism).
 
 ### Sequencer Node
 
@@ -43,7 +43,7 @@ You can also run additional non-Sequencer nodes if you'd like (not included in t
 OP Stack nodes, like Ethereum nodes, have a consensus client.
 The consensus client is responsible for determining the list and ordering of blocks and transactions that are part of your blockchain.
 Several implementations of the OP Stack consensus client exist, including `op-node` (maintained by OP Labs) and [`magi`](https://github.com/a16z/magi) (maintained by a16z).
-In this tutorial we'll be using the [`op-node` implementation](https://github.com/ethereum-optimism/optimism/tree/develop/op-node) found within the [Optimism Monorepo](https://github.com/ethereum-optimism/optimism).
+In this tutorial we'll be using the [`op-node` implementation](https://github.com/ethereum-optimism/optimism/tree/8bb597901ff4508062a266ea9928d4bbebe6c936/op-node) found within the [Optimism Monorepo](https://github.com/ethereum-optimism/optimism).
 
 #### Execution Client
 
@@ -56,14 +56,14 @@ In this tutorial we'll be using the [`op-geth` implementation](https://github.co
 
 The Batcher is an entity for publishing transactions from the Sequencer to the L1 blockchain.
 The Batcher runs continuously alongside the Sequencer and publishes transactions in batches (hence the name) on a regular basis.
-We'll be using the [`op-batcher` implementation](https://github.com/ethereum-optimism/optimism/tree/develop/op-batcher) of the Batcher component found within the [Optimism Monorepo](https://github.com/ethereum-optimism/optimism).
+We'll be using the [`op-batcher` implementation](https://github.com/ethereum-optimism/optimism/tree/8bb597901ff4508062a266ea9928d4bbebe6c936/op-batcher) of the Batcher component found within the [Optimism Monorepo](https://github.com/ethereum-optimism/optimism).
 
 ### Proposer
 
 The Proposer is an entity responsible for publishing transactions *results* (in the form of L2 state roots) to the L1 blockchain.
 This allows smart contracts on L1 to read the state of the L2, which is necessary for cross-chain communication and user withdrawals.
 It's likely that the Proposer will be removed in the future, but for now it's a necessary component of the OP Stack.
-We'll be using the [`op-proposer` implementation](https://github.com/ethereum-optimism/optimism/tree/develop/op-proposer) of the Proposer component found within the [Optimism Monorepo](https://github.com/ethereum-optimism/optimism).
+We'll be using the [`op-proposer` implementation](https://github.com/ethereum-optimism/optimism/tree/8bb597901ff4508062a266ea9928d4bbebe6c936/op-proposer) of the Proposer component found within the [Optimism Monorepo](https://github.com/ethereum-optimism/optimism).
 
 ## Software Dependencies
 
@@ -322,7 +322,7 @@ Make sure you've configured `direnv` properly and run `direnv allow` again so th
 ## Configure your network
 
 Once you've built both repositories, you'll need head back to the Optimism Monorepo to set up the configuration file for your chain.
-Currently, chain configuration lives inside of the [`contracts-bedrock`](https://github.com/ethereum-optimism/optimism/tree/129032f15b76b0d2a940443a39433de931a97a44/packages/contracts-bedrock) package in the form of a JSON file.
+Currently, chain configuration lives inside of the [`contracts-bedrock`](https://github.com/ethereum-optimism/optimism/tree/8bb597901ff4508062a266ea9928d4bbebe6c936/packages/contracts-bedrock) package in the form of a JSON file.
 
 #### 1. Enter the Optimism Monorepo
 

@@ -35,8 +35,8 @@ The Data Availability Layer defines where the raw inputs to an OP Stack based ch
 
 Ethereum DA is currently the most widely used Data Availability module for the OP Stack. When using the Ethereum DA module, source data can be derived from any piece of information accessible on the Ethereum blockchain. This includes Ethereum calldata, events, and 4844 data blobs.
 
-- [Specifications](https://github.com/ethereum-optimism/optimism/blob/129032f15b76b0d2a940443a39433de931a97a44/specs/derivation.md#batch-submission-wire-format)
-- [Source code](https://github.com/ethereum-optimism/optimism/tree/129032f15b76b0d2a940443a39433de931a97a44/op-batcher)
+- [Specifications](https://github.com/ethereum-optimism/optimism/blob/8bb597901ff4508062a266ea9928d4bbebe6c936/specs/derivation.md#batch-submission-wire-format)
+- [Source code](https://github.com/ethereum-optimism/optimism/tree/8bb597901ff4508062a266ea9928d4bbebe6c936/op-batcher)
 
 ### Sequencing
 
@@ -52,14 +52,14 @@ A simple modification to the Single Sequencer module is the Multiple Sequencer m
 
 ### Derivation
 
-The Derivation Layer defines how the raw data in the Data Availability Layer is processed to form the processed inputs that are sent to the Execution Layer via the standard [Ethereum Engine API](https://github.com/ethereum/execution-apis/blob/94164851c1630ff0a9c31d8d7d3d4fb886e196c0/src/engine/README.md). The Derivation Layer may also use the current system state, as defined by the Execution Layer, to inform the parsing of raw input data. The Derivation Layer can be modified to derive Engine API inputs from many different data sources. The Derivation Layer is typically tied closely to the Data Availability Layer because it must understand how to parse any raw input data.
+The Derivation Layer defines how the raw data in the Data Availability Layer is processed to form the processed inputs that are sent to the Execution Layer via the standard [Ethereum Engine API](https://github.com/ethereum/execution-apis/blob/431cf72fd3403d946ca3e3afc36b973fc87e0e89/src/engine/README.md). The Derivation Layer may also use the current system state, as defined by the Execution Layer, to inform the parsing of raw input data. The Derivation Layer can be modified to derive Engine API inputs from many different data sources. The Derivation Layer is typically tied closely to the Data Availability Layer because it must understand how to parse any raw input data.
 
 #### Rollup
 
 The Rollup module derives Engine API inputs from Ethereum block data, Sequencer transaction batches, Deposited transaction events, and more.
 
-- [Specifications](https://github.com/ethereum-optimism/optimism/blob/129032f15b76b0d2a940443a39433de931a97a44/specs/derivation.md#l2-chain-derivation-pipeline)
-- [Source code](https://github.com/ethereum-optimism/optimism/tree/129032f15b76b0d2a940443a39433de931a97a44/op-node)
+- [Specifications](https://github.com/ethereum-optimism/optimism/blob/8bb597901ff4508062a266ea9928d4bbebe6c936/specs/derivation.md#l2-chain-derivation-pipeline)
+- [Source code](https://github.com/ethereum-optimism/optimism/tree/8bb597901ff4508062a266ea9928d4bbebe6c936/op-node)
 
 #### Indexer (proposed)
 
@@ -73,8 +73,8 @@ The Execution Layer defines the structure of state within an OP Stack system and
 
 The EVM is an Execution Layer module that uses the same state representation and state transition function as the Ethereum Virtual Machine. The EVM module in the Ethereum Rollup configuration of the OP Stack is a [lightly modified](https://op-geth.optimism.io/) version of the EVM that adds support for L2 transactions initiated on Ethereum and adds an extra L1 Data Fee to each transaction to account for the cost of publishing transactions to Ethereum.
 
-- [Specifications](https://github.com/ethereum-optimism/optimism/blob/129032f15b76b0d2a940443a39433de931a97a44/specs/exec-engine.md) (where it differs from [geth](https://geth.ethereum.org/))
-- [Source code](https://github.com/ethereum-optimism/op-geth/tree/09ade3df6d1d3a4f8f308553825348be132bc960)
+- [Specifications](https://github.com/ethereum-optimism/optimism/blob/8bb597901ff4508062a266ea9928d4bbebe6c936/specs/exec-engine.md) (where it differs from [geth](https://geth.ethereum.org/))
+- [Source code](https://github.com/ethereum-optimism/op-geth/)
 
 ### Settlement Layer
 
@@ -89,8 +89,8 @@ Once a transaction is published and finalized on the corresponding Data Availabi
 
 An Attestation-based Fault Proof mechanism uses an optimistic protocol to establish a view of an OP Stack chain. In optimistic settlement mechanisms generally, **Proposer** entities can propose what they believe to be the current valid state of the OP Stack chain. If these proposals are not invalidated within a certain period of time (the “challenge period”), then the proposals are assumed by the mechanism to be correct. In the Attestation Proof mechanism in particular, a proposal can be invalidated if some threshold of pre-defined parties provide attestations to a valid state that is different than the state in the proposal. This places a trust assumption on the honesty of at least a threshold number of the pre-defined participants.
 
-- [Specifications](https://github.com/ethereum-optimism/optimism/blob/129032f15b76b0d2a940443a39433de931a97a44/specs/withdrawals.md) (called [withdrawal transactions](https://community.optimism.io/docs/developers/bridge/messaging/#))
-- [Source code](https://github.com/ethereum-optimism/optimism/tree/129032f15b76b0d2a940443a39433de931a97a44/packages/contracts-bedrock/contracts)
+- [Specifications](https://github.com/ethereum-optimism/optimism/blob/8bb597901ff4508062a266ea9928d4bbebe6c936/specs/withdrawals.md) (called [withdrawal transactions](https://community.optimism.io/docs/developers/bridge/messaging/#))
+- [Source code](https://github.com/ethereum-optimism/optimism/tree/8bb597901ff4508062a266ea9928d4bbebe6c936/packages/contracts-bedrock/src)
 
 #### Fault Proof Optimistic Settlement (proposed)
 
