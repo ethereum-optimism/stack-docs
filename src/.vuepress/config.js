@@ -53,7 +53,7 @@ module.exports = {
       },
       {
         text: 'Optimism Docs',
-        link: 'https://community.optimism.io/'
+        link: 'https://docs.optimism.io/'
       },
       {
         text: 'Governance',
