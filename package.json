@@ -5,14 +5,13 @@
   "main": "index.js",
   "scripts": {
     "dev": "vuepress dev src",
-    "build": "vuepress build src && copyfiles _redirects src/.vuepress/dist",
+    "build": "vuepress build src",
     "preview": "yarn build && serve -s src/.vuepress/dist -p 8080"
   },
   "license": "MIT",
   "devDependencies": {
     "@vuepress/plugin-medium-zoom": "^1.8.2",
     "@vuepress/plugin-pwa": "^1.9.7",
-    "copyfiles": "^2.4.1",
     "serve": "^14.2.0",
     "vuepress": "^1.8.2",
     "vuepress-plugin-plausible-analytics": "^0.2.1",
