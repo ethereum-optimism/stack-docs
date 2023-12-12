@@ -3,6 +3,12 @@ title: Contribute to the OP Stack
 lang: en-US
 ---
 
+::: danger Deprecated Documentation
+
+This documentation is deprecated. Please use our new [Technical Documentation Website](https://docs.optimism.io/stack/getting-started)
+
+:::
+
 The OP Stack is a collaborative, decentralized development stack that only gets more powerful as more people contribute. Code for the OP Stack should follow the stack’s [design principles](./understand/design-principles.md), which means it should be entirely open source and accessible for people to hack on, contribute to, and extend. The Optimism Collective wins when it works together. ♥️✨
 
 Whether you’re a budding protocol developer, dapp developer, bounty hunter, documentation editor, content creator, or anything in between, the OP Stack always has something for you to contribute to. Every contribution makes a difference — no contribution is too small.

@@ -3,6 +3,12 @@ title: Explorer and Indexer
 lang: en-US
 ---
 
+::: danger Deprecated Documentation
+
+This documentation is deprecated. Please use our new [Technical Documentation Website](https://docs.optimism.io/stack/getting-started)
+
+:::
+
 The next step is to be able to see what is actually happening in your blockchain.
 One easy way to do this is to use [Blockscout](https://www.blockscout.com/).
 

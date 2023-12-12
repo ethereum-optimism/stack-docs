@@ -3,6 +3,12 @@ title: Release History
 lang: en-US
 ---
 
+::: danger Deprecated Documentation
+
+This documentation is deprecated. Please use our new [Technical Documentation Website](https://docs.optimism.io/stack/getting-started)
+
+:::
+
 The OP Stack codebase is a decentralized development stack maintained by the Optimism Collective and built to power Optimism. 
 The OP Stack is constantly evolving as new layers and modules are developed. The OP Stack codebase is also not a product (in the traditional sense) but rather a collection of software components that power the Optimism ecosystem.
 

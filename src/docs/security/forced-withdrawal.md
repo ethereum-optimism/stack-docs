@@ -3,6 +3,11 @@ title: Forced withdrawal from an OP Stack blockchain
 lang: en-US
 ---
 
+::: danger Deprecated Documentation
+
+This documentation is deprecated. Please use our new [Technical Documentation Website](https://docs.optimism.io/stack/getting-started)
+
+:::
 
 ## What is this?
 

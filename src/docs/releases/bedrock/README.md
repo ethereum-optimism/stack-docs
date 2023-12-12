@@ -3,6 +3,12 @@ title: OP Stack codebase V1 - Bedrock
 lang: en-US
 ---
 
+::: danger Deprecated Documentation
+
+This documentation is deprecated. Please use our new [Technical Documentation Website](https://docs.optimism.io/stack/getting-started)
+
+:::
+
 ## Overview
 
 The first release of the OP Stack codebase is called **Bedrock**.

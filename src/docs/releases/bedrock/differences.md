@@ -3,6 +3,12 @@ title: Differences between Bedrock and L1 Ethereum
 lang: en-US
 ---
 
+::: danger Deprecated Documentation
+
+This documentation is deprecated. Please use our new [Technical Documentation Website](https://docs.optimism.io/stack/getting-started)
+
+:::
+
 It's important to note that there are various minor discrepancies between the behavior of Optimism and Ethereum.
 You should be aware of these discrepancies when building apps on top of Optimism or the OP Stack codebase.
 

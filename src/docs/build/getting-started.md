@@ -3,6 +3,12 @@ title: Getting Started
 lang: en-US
 ---
 
+::: danger Deprecated Documentation
+
+This documentation is deprecated. Please use our new [Technical Documentation Website](https://docs.optimism.io/stack/getting-started)
+
+:::
+
 ::: tip
 Please **be prepared to set aside approximately one hour** to get everything running properly and **make sure to read through the guide carefully**.
 You don't want to miss any important steps that might cause issues down the line.

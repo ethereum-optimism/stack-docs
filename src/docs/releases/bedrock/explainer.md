@@ -6,6 +6,12 @@ meta:
       content: https://dev.optimism.io/content/images/size/w2000/2022/12/bedrock-BLUE.jpg
 ---
 
+::: danger Deprecated Documentation
+
+This documentation is deprecated. Please use our new [Technical Documentation Website](https://docs.optimism.io/stack/getting-started)
+
+:::
+
 ![Bedrock](https://dev.optimism.io/content/images/size/w2000/2022/12/bedrock-BLUE.jpg)
 
 ::: tip Staying up to date

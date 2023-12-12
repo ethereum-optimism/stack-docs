@@ -3,6 +3,12 @@ title: Security FAQs
 lang: en-US
 ---
 
+::: danger Deprecated Documentation
+
+This documentation is deprecated. Please use our new [Technical Documentation Website](https://docs.optimism.io/stack/getting-started)
+
+:::
+
 ::: warning 🚧 Work in Progress
 
 The OP Stack is a work in progress. Constantly pushing to improve the overall security and decentralization of the OP Stack is a top priority. 

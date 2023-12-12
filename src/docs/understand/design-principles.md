@@ -3,6 +3,11 @@ title: Design Principles for USEful Software
 lang: en-US
 ---
 
+::: danger Deprecated Documentation
+
+This documentation is deprecated. Please use our new [Technical Documentation Website](https://docs.optimism.io/stack/getting-started)
+
+:::
 
 ::: tip The OP Stack is USEful software
 

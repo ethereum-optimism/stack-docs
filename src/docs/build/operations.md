@@ -3,6 +3,12 @@ title: Rollup Operations
 lang: en-US
 ---
 
+::: danger Deprecated Documentation
+
+This documentation is deprecated. Please use our new [Technical Documentation Website](https://docs.optimism.io/stack/getting-started)
+
+:::
+
 ## Stopping your Rollup
 
 An orderly shutdown is done in the reverse order to the order in which components were started:

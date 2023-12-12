@@ -3,6 +3,12 @@ title: Welcome to the OP Stack
 lang: en-US
 ---
 
+::: danger Deprecated Documentation
+
+This documentation is deprecated. Please use our new [Technical Documentation Website](https://docs.optimism.io/stack/getting-started)
+
+:::
+
 **The OP Stack is the standardized, shared, and open-source development stack that powers Optimism, maintained by the Optimism Collective.**
 
 ::: tip Staying up to date
