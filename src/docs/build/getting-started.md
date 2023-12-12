@@ -97,7 +97,7 @@ Make sure you've followed [the guide on the `direnv` website](https://direnv.net
 
 ::: warning
 Make sure that you have correctly hooked `direnv` into your shell by modifying your shell configuration file (like `~/.bashrc` or `~/.zshrc`).
-If you haven't edited a config file thens you probably haven't configured `direnv` properly (and things might not work later).
+If you haven't edited a config file then you probably haven't configured `direnv` properly (and things might not work later).
 :::
 
 ## Get Access to a Sepolia Node
@@ -107,7 +107,7 @@ The OP Stack Rollups were designed to use EVM Equivalent blockchains like Ethere
 
 **This guide uses the Sepolia testnet as an L1 chain**.
 We recommend that you also use Sepolia.
-You can also use use other EVM-compatible blockchains, but you may run into unexpected errors.
+You can also use other EVM-compatible blockchains, but you may run into unexpected errors.
 If you want to use an alternative network, make sure to carefully review each command and replace any Sepolia-specific values with the values for your network.
 
 Since we're deploying our OP Stack chain to Sepolia, you'll need to have access to a Sepolia node.
@@ -140,26 +140,13 @@ git clone https://github.com/ethereum-optimism/optimism.git
 cd optimism
 ```
 
-#### 3. Check your dependencies
-
-::: warning
-Don't skip this step! Make sure you have all of the required dependencies installed before continuing.
-:::
-
-Run the following script and double check that you have all of the required versions installed.
-If you don't have the correct versions installed, you may run into unexpected errors.
-
-```bash
-./packages/contracts-bedrock/scripts/getting-started/versions.sh
-```
-
-#### 4. Install dependencies
+#### 3. Install dependencies
 
 ```bash
 pnpm install
 ```
 
-#### 5. Build the various packages inside of the Optimism Monorepo
+#### 4. Build the various packages inside of the Optimism Monorepo
 
 ```bash
 make op-node op-batcher op-proposer
