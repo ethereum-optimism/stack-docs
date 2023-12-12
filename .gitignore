@@ -52,3 +52,6 @@ __pycache__
 
 # Ignore echidna artifacts
 crytic-export
+
+# Ignore the generated redirects file 
+src/.vuepress/redirects.js

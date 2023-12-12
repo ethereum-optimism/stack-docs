@@ -1,11 +1,26 @@
 import event from '@vuepress/plugin-pwa/lib/event'
+import redirects from './redirects'
 
 export default ({ router }) => {
   registerAutoReload();
   
   router.addRoutes([
-    { path: '/docs/', redirect: '/' },
+    { path: '/docs/', redirect: '/' }
   ])
+
+  // Custom redirect hack.
+  router.beforeEach((to, from, next) => {
+    const target = redirects[to.path] || redirects[to.path.replace(/\/$/, '')]
+    if (target) {
+      if (target.startsWith('http://') || target.startsWith('https://')) {
+        window.location.href = target
+      } else {
+        next(target)
+      }
+    } else {
+      next()
+    }
+  })
 }
 
 // When new content is detected by the app, this will automatically
