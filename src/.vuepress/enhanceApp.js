@@ -9,20 +9,20 @@ export default ({ router }) => {
   ])
 
   // Custom redirect hack.
-  router.beforeEach((to, from, next) => {
-    const target = redirects[to.path] || redirects[to.path.replace(/\/$/, '')]
-    if (target) {
-      if (target.startsWith('http://') || target.startsWith('https://')) {
-        if (typeof window !== 'undefined') {
+  if (typeof window !== 'undefined') {
+    router.beforeEach((to, from, next) => {
+      const target = redirects[to.path] || redirects[to.path.replace(/\/$/, '')]
+      if (target) {
+        if (target.startsWith('http://') || target.startsWith('https://')) {
           window.location.href = target
+        } else {
+          next(target)
         }
       } else {
-        next(target)
+        next()
       }
-    } else {
-      next()
-    }
-  })
+    })
+  }
 }
 
 // When new content is detected by the app, this will automatically
