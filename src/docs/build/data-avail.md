@@ -46,7 +46,11 @@ An example of an EVM-Ordered Alternative DA module can be found within [this mod
 
 ### Non-EVM DA
 
-A non-EVM DA module uses a chain not based on the EVM to manage both the ordering and storage of raw input data. Such a modification would require relatively significant modifications to the [derivation portion](https://github.com/ethereum-optimism/optimism/tree/129032f15b76b0d2a940443a39433de931a97a44/op-node/rollup/derive) of the `op-node`. No such fully-independent DA modules have been developed yet — be the first!
+A non-EVM DA module uses a chain not based on the EVM to manage both the ordering and storage of raw input data. Such solutions require relatively significant modifications to the [derivation portion](https://github.com/ethereum-optimism/optimism/tree/129032f15b76b0d2a940443a39433de931a97a44/op-node/rollup/derive) of the `op-node`.
+
+The first fully-independent DA module can be found within [the Rollux fork of the OP Stack](https://github.com/sys-labs/rollux/commit/25a4c9410ddae31ff7195f67495491f71e684e03) that uses [PoDA Protocol (Proof of Data Availability)](https://docs.rollux.com/docs/sys/PoDA/). PoDA is a layer 1 DA solution served by the Syscoin blockchain.
+
+The Rollux implementation of PoDA also provides [a path for serving PoDA to fractal layers (L3 and beyond) through layer 2](https://github.com/sys-labs/rollux/commit/6de6849f60f20f1e0b5ca314daa543344010003e).
 
 ### Multiple DA
 
