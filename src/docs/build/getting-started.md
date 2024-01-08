@@ -172,6 +172,12 @@ make op-node op-batcher op-proposer
 pnpm build
 ```
 
+#### 6. Init and Pull submodules inside of the Optimism Monorepo
+
+```bash
+make submodules
+```
+
 ### Build `op-geth`
 
 #### 1. Clone op-geth
